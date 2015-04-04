@@ -1,4 +1,4 @@
-#CSC480_Facebook_Database}
+#CSC480_Facebook_Database
 
 TODO: Write a project description
 
