@@ -15,7 +15,6 @@ public class Friend
 	private boolean friendRequestPending;
 	private boolean friendRequestCancelled;
 	private boolean friendRequestComplete;
-	private User user;
 	private String status;
 	
 	/**
@@ -28,7 +27,7 @@ public class Friend
 	 * @param friendRequestComplete
 	 * @param user
 	 */
-	public Friend(int friend1, int friend2, Date friendSince, boolean friendRequestPending, boolean friendRequestCancelled, boolean friendRequestComplete, User user)
+	public Friend(int friend1, int friend2, Date friendSince, boolean friendRequestPending, boolean friendRequestCancelled, boolean friendRequestComplete)
 	{
 		this.friend1 = friend1;
 		this.friend2 = friend2;
@@ -36,7 +35,6 @@ public class Friend
 		this.friendRequestPending = friendRequestPending;
 		this.friendRequestCancelled = friendRequestCancelled;
 		this.friendRequestComplete = friendRequestComplete;
-		this.user = user;
 	}
 	
 	public int getRequestSender()

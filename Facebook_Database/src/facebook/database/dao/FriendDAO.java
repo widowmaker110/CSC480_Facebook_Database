@@ -6,8 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashMap;
-import java.util.Map;
 
 import facebook.database.model.*;
 
@@ -115,7 +113,7 @@ public class FriendDAO
 			
 			rs.close();
 			
-			Friend friend = new Friend(user1ID, user2ID, friendSince, friendRequestPending, friendRequestCaneled, friendRequestComplete, user1);
+			Friend friend = new Friend(user1ID, user2ID, friendSince, friendRequestPending, friendRequestCaneled, friendRequestComplete);
 			
 			//cache.put(deptNum, course);
 			return friend;
@@ -141,6 +139,7 @@ public class FriendDAO
 	{
 		
 		try {
+			// TODO
 			// make sure that the dept, num pair is currently unused
 //			if (find(dept.getDeptId(), num) != null)
 //				return null;
@@ -162,8 +161,9 @@ public class FriendDAO
 			
 			pstmt.executeUpdate();
 			
-			Friend friend = new Friend(user1.getUserId(), user2.getUserId(), friendSince, friendRequestPending, friendRequestCaneled, friendRequestComplete, user1);
+			Friend friend = new Friend(user1.getUserId(), user2.getUserId(), friendSince, friendRequestPending, friendRequestCaneled, friendRequestComplete);
 			
+			// TODO
 //			cache.put(new DeptNumPair(dept.getDeptId(), num), course);
 			return friend;
 		}
@@ -175,44 +175,50 @@ public class FriendDAO
 	}
 
 	/**
-	 * Title was changed in the model object, so propagate the change to the database.
+	 * Changing the status of two user's and their given friend relationship
 	 * 
-	 * @param dept
-	 * @param num
-	 * @param title
+	 * @param user1ID int id of user 1
+	 * @param user2ID int id of user 2
+	 * @param changeType int describing change in friendshipStatus. 
+	 *    1 = Pending
+	 *    2 = Canceled
+	 *    3 = Complete
 	 */
-	public void changeTitle(Department dept, int num, String title) {
-		try {
-			String cmd = "update COURSE set Title = ? where Dept = ? and Num = ?";
+	public void changeFriendStatus(int user1ID, int user2ID, int changeType, boolean status)
+	{
+		 // define which changeType is appropriate
+		String set = "set";
+		switch(changeType)
+		{
+			default:
+			case 1:
+				// same as "set friendRequestPending = ?"
+				set = set + " friendRequestPending = ?";
+				break;
+			case 2:
+				set = set + " friendRequestCaneled = ?";
+				break;
+			case 3:
+				set = set + " friendRequestComplete = ?";
+				break;
+		}
+		
+		try 
+		{
+			String cmd = "update FRIEND "
+					+ set
+					+ "where friend1 = ? and friend2 = ?";
+			
 			PreparedStatement pstmt = conn.prepareStatement(cmd);
-			pstmt.setString(1, title);
-			pstmt.setInt(2, dept.getDeptId());
-			pstmt.setInt(3, num);
+			
+			pstmt.setBoolean(1, status); // false or true for any of the given friendshipStatuses.
+			pstmt.setInt(2, user1ID);    // ID number of user 1
+			pstmt.setInt(3, user2ID);    // ID number of user 2
+			
 			pstmt.executeUpdate();
 		}
-		catch(SQLException e) {
-			dbm.cleanup();
-			throw new RuntimeException("error changing title", e);
-		}
-	}
-
-	/**
-	 * Faculty member was changed in the model object, so propagate the change to the database.
-	 * 
-	 * @param dept
-	 * @param num
-	 * @param faculty
-	 */
-	public void changeFaculty(Department dept, int num, Faculty faculty) {
-		try {
-			String cmd = "update COURSE set FacSSN = ? where Dept = ? and Num = ?";
-			PreparedStatement pstmt = conn.prepareStatement(cmd);
-			pstmt.setInt(1, faculty.getSsn());
-			pstmt.setInt(2, dept.getDeptId());
-			pstmt.setInt(3, num);
-			pstmt.executeUpdate();
-		}
-		catch(SQLException e) {
+		catch(SQLException e) 
+		{
 			dbm.cleanup();
 			throw new RuntimeException("error changing faculty", e);
 		}
@@ -225,8 +231,8 @@ public class FriendDAO
 	 */
 	void clear() throws SQLException {
 		Statement stmt = conn.createStatement();
-		String s = "delete from COURSE";
+		String s = "delete from FRIEND";
 		stmt.executeUpdate(s);
-		cache.clear();
+		//cache.clear();
 	}
 }
