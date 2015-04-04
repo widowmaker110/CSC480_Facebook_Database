@@ -1,6 +1,4 @@
-<snippet>
-  <content><![CDATA[
-# ${1:CSC480_Facebook_Database}
+#CSC480_Facebook_Database}
 
 TODO: Write a project description
 
@@ -31,6 +29,3 @@ TODO: Write credits
 ## License
 
 TODO: Write license
-]]></content>
-  <tabTrigger>readme</tabTrigger>
-</snippet>
