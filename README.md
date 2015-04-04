@@ -1,6 +1,6 @@
 <snippet>
   <content><![CDATA[
-# ${1 CSC480_Facebook_Database}
+# ${1:CSC480_Facebook_Database}
 
 TODO: Write a project description
 
