@@ -2,10 +2,6 @@
 
 TODO: Write a project description
 
-## Authors
-
-Alexander Miller & Congshu Wang
-
 ## Usage
 
 TODO: Write usage instructions
@@ -24,7 +20,8 @@ TODO: Write history
 
 ## Credits
 
-TODO: Write credits
+Alexander Miller: alexandermiller_2016@depauw.edu
+Congshu Wang: congshuwang_2015@depauw.edu
 
 ## License
 
