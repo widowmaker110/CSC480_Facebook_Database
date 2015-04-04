@@ -13,6 +13,15 @@ public class Comment
 	private User user;
 	private Post post;
 	
+	/**
+	 * 
+	 * @param dao
+	 * @param commentId
+	 * @param commentDate
+	 * @param commentContext
+	 * @param user
+	 * @param post
+	 */
 	public Comment(CommentDAO dao, int commentId, Date commentDate, String commentContext, User user, Post post)
 	{
 		this.dao = dao;

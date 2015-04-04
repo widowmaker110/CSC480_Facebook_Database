@@ -60,12 +60,84 @@ public class DatabaseManager
 	private void create(Connection conn) throws SQLException 
 	{
 		//TODO need to change these to the appropriate DAO's.
-//		FacultyDAO.create(conn);
-//		DepartmentDAO.create(conn);
-//		CourseDAO.create(conn);
-//		FacultyDAO.addConstraints(conn);
-//		DepartmentDAO.addConstraints(conn);
-//		CourseDAO.addConstraints(conn);
+		
+		// CREATE
+		FriendDAO.create(conn);
+				
+		
+		// CONSTRAINTS
+		FriendDAO.addConstraints(conn);
 		conn.commit();
 	}
+	
+	//***************************************************************
+	// Utility functions
+		
+		/**
+		 * Commit changes since last call to commit
+		 */
+		public void commit() {
+			try {
+				conn.commit();
+			}
+			catch(SQLException e) {
+				throw new RuntimeException("cannot commit database", e);
+			}
+		}
+
+		/**
+		 * Abort changes since last call to commit, then close connection
+		 */
+		public void cleanup() {
+			try {
+				conn.rollback();
+				conn.close();
+			}
+			catch(SQLException e) {
+				System.out.println("fatal error: cannot cleanup connection");
+			}
+		}
+
+		/**
+		 * Close connection and shutdown database
+		 */
+		public void close() {
+			try {
+				conn.close();
+			}
+			catch(SQLException e) {
+				throw new RuntimeException("cannot close database connection", e);
+			}
+			
+			// Now shutdown the embedded database system -- this is Derby-specific
+			try {
+				Properties prop = new Properties();
+				prop.put("shutdown", "true");
+				conn = driver.connect(url, prop);
+			} catch (SQLException e) {
+				// This is supposed to throw an exception...
+				System.out.println("Derby has shut down successfully");
+			}
+		}
+
+		/**
+		 * Clear out all data from database (but leave empty tables)
+		 */
+//		public void clearTables() {
+//			try {
+//				// This is not as straightforward as it may seem, because
+//				// of the cyclic foreign keys -- I had to play with
+//				// "on delete set null" and "on delete cascade" for a bit
+//				
+//				//TODO fix these once the DAO's are done
+//				facultyDAO.clear();
+//				departmentDAO.clear();
+//				courseDAO.clear();
+//			} catch (SQLException e) {
+//				throw new RuntimeException("cannot clear tables", e);
+//			}
+//		}
+		
+		// Utility functions
+		//***************************************************************
 }

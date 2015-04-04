@@ -13,6 +13,15 @@ public class Post
 	private String postImage; // an url to the image
 	private String postVideo; // an url to the video
 	
+	/**
+	 * 
+	 * @param dao
+	 * @param postId
+	 * @param postDate
+	 * @param postText
+	 * @param postImage
+	 * @param postVideo
+	 */
 	public Post(PostDAO dao, int postId, Date postDate, String postText, String postImage, String postVideo)
 	{
 		this.dao = dao;

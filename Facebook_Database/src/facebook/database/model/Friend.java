@@ -18,6 +18,16 @@ public class Friend
 	private User user;
 	private String status;
 	
+	/**
+	 * 
+	 * @param friend1
+	 * @param friend2
+	 * @param friendSince
+	 * @param friendRequestPending
+	 * @param friendRequestCancelled
+	 * @param friendRequestComplete
+	 * @param user
+	 */
 	public Friend(int friend1, int friend2, Date friendSince, boolean friendRequestPending, boolean friendRequestCancelled, boolean friendRequestComplete, User user)
 	{
 		this.friend1 = friend1;

@@ -12,6 +12,14 @@ public class User
 	private String password;
 	private String email;
 	
+	/**
+	 * 
+	 * @param dao
+	 * @param userId
+	 * @param userName
+	 * @param password
+	 * @param email
+	 */
 	public User(UserDAO dao, int userId, String userName, String password, String email)
 	{
 		this.dao = dao;

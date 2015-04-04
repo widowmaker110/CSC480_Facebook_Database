@@ -12,6 +12,14 @@ public class Like
 	private User user;
 	private Post post;
 	
+	/**
+	 * 
+	 * @param dao
+	 * @param likeId
+	 * @param likeDate
+	 * @param user
+	 * @param post
+	 */
 	public Like(LikeDAO dao, int likeId, Date likeDate, User user, Post post)
 	{
 		this.dao = dao;
