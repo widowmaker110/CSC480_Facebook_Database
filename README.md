@@ -21,6 +21,7 @@ TODO: Write history
 ## Credits
 
 Alexander Miller: alexandermiller_2016@depauw.edu
+
 Congshu Wang: congshuwang_2015@depauw.edu
 
 ## License
