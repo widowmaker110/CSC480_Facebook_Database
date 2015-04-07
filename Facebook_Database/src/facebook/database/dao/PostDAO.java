@@ -12,7 +12,7 @@ import java.util.Map;
 import facebook.database.model.*;
 
 /**
- * Data Access Object for the Like table.
+ * Data Access Object for the Post table.
  * Encapsulates all of the relevant SQL commands.
  * 
  * @version 4/7/2015
@@ -33,7 +33,7 @@ public class PostDAO
 	}
 	
 	/**
-	 * Create the Like table via SQL
+	 * Create the Post table via SQL
 	 * 
 	 * @param conn
 	 * @throws SQLException
@@ -54,7 +54,7 @@ public class PostDAO
 	}
 	
 	/**
-	 * Modify the Like table to add foreign key constraints
+	 * Modify the Post table to add foreign key constraints
 	 * (needs to happen after the other tables have been created)
 	 * 
 	 * @param conn
@@ -109,42 +109,45 @@ public class PostDAO
 		}
 	}
 
+
 	/**
-	 * Insert a Like object into the LIKE table given the attributes
+	 * Insert a Post object into the LIKE table given the attributes
 	 * 
-	 *  UNDERCONSTRUCTION FROM HERE DOWNWARD
-	 * 
-	 * @param likeId
-	 * @param userId
-	 * @param postId
-	 * @param likeDate
-	 * @return Like objected which is newly inserted
+	 * @param postId2
+	 * @param userId2
+	 * @param postDate2
+	 * @param postText2
+	 * @param postImage2
+	 * @param postVideo2
+	 * @return the Post Object with the attributes given
 	 */
-	public Like insert(int likeId, int userId, int postId, Date likeDate) 
+	public Post insert(int postId2, int userId2, Date postDate2, String postText2, String postImage2, String postVideo2)
 	{
 		
 		try 
 		{
 			// make sure that the friend is currently unused
-			if (find(likeId, likeDate, null, null, null) != null)
+			if (find(postId2, userId2, postDate2, postText2,  postImage2, postVideo2) != null)
 				return null;
 			
-			String cmd = "insert into LIKE(userId, userId, postId, likeDate) "
+			String cmd = "insert into LIKE(postId, userId, postDate, postText, postImage, postVideo) "
 						+
 						"values(?, ?, ?, ?)";
 			PreparedStatement pstmt = conn.prepareStatement(cmd);
 			
-			pstmt.setInt(1, userId); 		// userId
-			pstmt.setInt(2, likeId);		// likeId
-			pstmt.setInt(3, postId); 		// postId
-			pstmt.setDate(4, likeDate);     // likeDate
+			pstmt.setInt(1, postId2); 			// postId
+			pstmt.setInt(2, userId2);			// userId
+			pstmt.setDate(3, postDate2); 		// postDate
+			pstmt.setString(4, postText2);     	// postText
+			pstmt.setString(5, postImage2);     // postImage
+			pstmt.setString(6, postVideo2);     // postVideo
 			
 			pstmt.executeUpdate();
 			
-			Like like = new Like(this, likeId, userId, postId, likeDate);
+			Post post = new Post(this, postId2, userId2, postDate2, postText2, postImage2, postVideo2);
 			
-			cache.put(likeId, like);
-			return like;
+			cache.put(postId2, post);
+			return post;
 		}
 		catch(SQLException e) 
 		{
@@ -154,14 +157,14 @@ public class PostDAO
 	}
 	
 	/**
-	 * Clear all data from the Friend table.
+	 * Clear all data from the Post table.
 	 * 
 	 * @throws SQLException
 	 */
 	void clear() throws SQLException 
 	{
 		Statement stmt = conn.createStatement();
-		String s = "delete from LIKE";
+		String s = "delete from POST";
 		stmt.executeUpdate(s);
 		cache.clear();
 	}
