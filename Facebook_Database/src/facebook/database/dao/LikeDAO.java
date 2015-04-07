@@ -105,4 +105,59 @@ public class LikeDAO
 			throw new RuntimeException("error finding like", e);
 		}
 	}
+
+	/**
+	 * Insert a Like object into the LIKE table given the attributes
+	 * 
+	 * @param likeId
+	 * @param userId
+	 * @param postId
+	 * @param likeDate
+	 * @return Like objected which is newly inserted
+	 */
+	public Like insert(int likeId, int userId, int postId, Date likeDate) 
+	{
+		
+		try 
+		{
+			// make sure that the friend is currently unused
+			if (find(likeId) != null)
+				return null;
+			
+			String cmd = "insert into LIKE(userId, userId, postId, likeDate) "
+						+
+						"values(?, ?, ?, ?)";
+			PreparedStatement pstmt = conn.prepareStatement(cmd);
+			
+			pstmt.setInt(1, userId); 		// userId
+			pstmt.setInt(2, likeId);		// likeId
+			pstmt.setInt(3, postId); 		// postId
+			pstmt.setDate(4, likeDate);     // likeDate
+			
+			pstmt.executeUpdate();
+			
+			Like like = new Like(this, likeId, userId, postId, likeDate);
+			
+			cache.put(likeId, like);
+			return like;
+		}
+		catch(SQLException e) 
+		{
+			dbm.cleanup();
+			throw new RuntimeException("error inserting new friend", e);
+		}
+	}
+	
+	/**
+	 * Clear all data from the Friend table.
+	 * 
+	 * @throws SQLException
+	 */
+	void clear() throws SQLException 
+	{
+		Statement stmt = conn.createStatement();
+		String s = "delete from LIKE";
+		stmt.executeUpdate(s);
+		cache.clear();
+	}
 }
