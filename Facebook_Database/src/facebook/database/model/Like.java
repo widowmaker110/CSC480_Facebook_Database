@@ -8,9 +8,11 @@ public class Like
 {
 	private LikeDAO dao;
 	private int likeId;
+	private int userId;
+	private int postId;
 	private Date likeDate;
-	private User user;
-	private Post post;
+	//private User user;
+	//private Post post;
 	
 	/**
 	 * 
@@ -20,13 +22,13 @@ public class Like
 	 * @param user
 	 * @param post
 	 */
-	public Like(LikeDAO dao, int likeId, Date likeDate, User user, Post post)
+	public Like(LikeDAO dao, int likeId, int userId, int postId, Date likeDate)
 	{
 		this.dao = dao;
 		this.likeId = likeId;
 		this.likeDate = likeDate;
-		this.user = user;
-		this.post = post;
+		this.userId = userId;
+		this.postId = postId;
 	}
 	
 	public int getLikeId()
@@ -39,13 +41,13 @@ public class Like
 		return likeDate;
 	}
 	
-	public User getUser()
+	public int getUserId()
 	{
-		return user;
+		return userId;
 	}
 	
-	public Post getPost()
+	public int getPostId()
 	{
-		return post;
+		return postId;
 	}
 }
