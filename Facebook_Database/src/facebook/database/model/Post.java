@@ -8,6 +8,7 @@ public class Post
 {
 	private PostDAO dao;
 	private int postId;
+	private int userId;
 	private Date postDate;
 	private String postText;
 	private String postImage; // an url to the image
@@ -22,9 +23,10 @@ public class Post
 	 * @param postImage
 	 * @param postVideo
 	 */
-	public Post(PostDAO dao, int postId, Date postDate, String postText, String postImage, String postVideo)
+	public Post(PostDAO dao, int postId, int userId, Date postDate, String postText, String postImage, String postVideo)
 	{
 		this.dao = dao;
+		this.setUserId(userId);
 		this.postId = postId;
 		this.postDate = postDate;
 		this.postText = postText;
@@ -73,5 +75,13 @@ public class Post
 	{
 		postImage = newPostVideo;
 		//dao.changePostVideo(...);
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 }
