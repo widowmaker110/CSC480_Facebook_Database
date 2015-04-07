@@ -21,9 +21,9 @@ import facebook.database.model.*;
 
 public class LikeDAO 
 {
-	private Connection conn;
+	private static Connection conn;
 	private DatabaseManager dbm;
-	private Map<Integer, Like> cache;
+	private static Map<Integer, Like> cache;
 	
 	public LikeDAO(Connection conn, DatabaseManager dbm)
 	{
@@ -153,7 +153,7 @@ public class LikeDAO
 	 * 
 	 * @throws SQLException
 	 */
-	void clear() throws SQLException 
+	static void clear() throws SQLException 
 	{
 		Statement stmt = conn.createStatement();
 		String s = "delete from LIKE";

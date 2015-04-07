@@ -97,8 +97,6 @@ public class CommentDAO
 			String commentText = rs.getString("commentText");
 			rs.close();
 			
-			//User user = dbm.findUser(userId);
-			//Post post = dbm.findPost(postId);
 			Comment comment = new Comment(this, commentId, userId, postId, commentDate, commentText);
 			
 			cache.put(commentId, comment);
@@ -143,7 +141,8 @@ public class CommentDAO
 			cache.put(commentId, comment);
 			return comment;
 		}
-		catch(SQLException e) {
+		catch(SQLException e) 
+		{
 			dbm.cleanup();
 			throw new RuntimeException("error inserting new comment", e);
 		}
@@ -173,5 +172,18 @@ public class CommentDAO
 			dbm.cleanup();
 			throw new RuntimeException("error changing comment", e);
 		}
+	}
+	
+	/**
+	 * Clear all data from the Comment table.
+	 * 
+	 * @throws SQLException
+	 */
+	void clear() throws SQLException 
+	{
+		Statement stmt = conn.createStatement();
+		String s = "delete from COMMENT";
+		stmt.executeUpdate(s);
+		cache.clear();
 	}
 }

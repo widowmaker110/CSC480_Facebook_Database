@@ -49,13 +49,11 @@ public class DatabaseManager
 			}
 		}
 		
-		//TODO need to change these to the appropriate DAO's.
 		commentDao = new CommentDAO(conn, this);
 		friendDao = new FriendDAO(conn, this);
-		//uncomment below once the constructors in their classes are finished
-		//likeDao = new LikeDAO(conn, this);
-		//postDao = new PostDAO(conn, this);
-		//userDao = new UserDAO(conn, this);
+		likeDao = new LikeDAO(conn, this);
+		postDao = new PostDAO(conn, this);
+		userDao = new UserDAO(conn, this);
 	}
 	
 	/**
@@ -65,15 +63,18 @@ public class DatabaseManager
 	 * @throws SQLException
 	 */
 	private void create(Connection conn) throws SQLException 
-	{
-		//TODO need to change these to the appropriate DAO's.
-		
+	{		
 		// CREATE
 		FriendDAO.create(conn);
+		LikeDAO.create(conn);
+		PostDAO.create(conn);
+		UserDAO.create(conn);
 				
-		
 		// CONSTRAINTS
 		FriendDAO.addConstraints(conn);
+		LikeDAO.addConstraints(conn);
+		PostDAO.addConstraints(conn);
+		
 		conn.commit();
 	}
 	
@@ -130,20 +131,24 @@ public class DatabaseManager
 		/**
 		 * Clear out all data from database (but leave empty tables)
 		 */
-//		public void clearTables() {
-//			try {
-//				// This is not as straightforward as it may seem, because
-//				// of the cyclic foreign keys -- I had to play with
-//				// "on delete set null" and "on delete cascade" for a bit
-//				
-//				//TODO fix these once the DAO's are done
-//				facultyDAO.clear();
-//				departmentDAO.clear();
-//				courseDAO.clear();
-//			} catch (SQLException e) {
-//				throw new RuntimeException("cannot clear tables", e);
-//			}
-//		}
+		public void clearTables() 
+		{
+			try 
+			{
+				// This is not as straightforward as it may seem, because
+				// of the cyclic foreign keys -- I had to play with
+				// "on delete set null" and "on delete cascade" for a bit
+				
+				FriendDAO.clear();
+				LikeDAO.clear();
+				PostDAO.clear();
+				UserDAO.clear();
+			} 
+			catch (SQLException e) 
+			{
+				throw new RuntimeException("cannot clear tables", e);
+			}
+		}
 		
 		// Utility functions
 		//***************************************************************

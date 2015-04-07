@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 
 import facebook.database.model.*;
 
@@ -21,15 +23,15 @@ import facebook.database.model.*;
 public class UserDAO 
 {
 	
-	private Connection conn;
+	private static Connection conn;
 	private DatabaseManager dbm;
-	//private Map<DeptNumPair, Course> cache;
+	private Map<Integer, User> cache;
 
 	public UserDAO(Connection conn, DatabaseManager dbm) 
 	{
 		this.conn = conn;
 		this.dbm = dbm;
-		//this.cache = new HashMap<DeptNumPair, Course>();
+		this.cache = new HashMap<Integer, User>();
 	}
 	
 	/**
@@ -53,27 +55,6 @@ public class UserDAO
 	}
 	
 	/**
-	 * Modify the Friend table to add foreign key constraints
-	 * (needs to happen after the other tables have been created)
-	 * 
-	 * @param conn
-	 * @throws SQLException
-	 */
-	static void addConstraints(Connection conn) throws SQLException 
-	{
-		Statement stmt = conn.createStatement();
-		
-		String s = "alter table FRIEND add constraint fk_frienduser1 "
-				+ "foreign key(friend1) references User on delete cascade";
-		
-		stmt.executeUpdate(s);
-		
-		s = "alter table FRIEND add constraint fk_frienduser2 "
-				+ "foreign key(friend2) references User on delete cascade";
-		stmt.executeUpdate(s);
-	}
-	
-	/**
 	 * Retrieve a User object given its key. Checks the cache first,
 	 * then executes SQL query if object not already present.
 	 * 
@@ -81,11 +62,10 @@ public class UserDAO
 	 * @param num
 	 * @return the User object, or null if not found
 	 */
-	public Friend find(int user1ID, int user2ID) 
+	public User find(int user1ID, int user2ID) 
 	{
-		//TODO fix this once the caching is fixed.
-//		DeptNumPair deptNum = new DeptNumPair(deptid, num);
-//		if (cache.containsKey(deptNum)) return cache.get(deptNum);
+		if (cache.containsKey(user1ID)) return cache.get(user1ID);
+		if (cache.containsKey(user2ID)) return cache.get(user2ID);
 		
 		try {
 			//TODO change this query
@@ -229,7 +209,7 @@ public class UserDAO
 	 * 
 	 * @throws SQLException
 	 */
-	void clear() throws SQLException {
+	static void clear() throws SQLException {
 		Statement stmt = conn.createStatement();
 		String s = "delete from FRIEND";
 		stmt.executeUpdate(s);

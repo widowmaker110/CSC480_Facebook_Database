@@ -55,10 +55,10 @@ public class FriendDAO
 		}
 	}
 	
-	private Connection conn;
+	private static Connection conn;
 	private DatabaseManager dbm;
 	// unique ID and object paired in a hashmap
-	private Map<FriendPair, Friend> cache;
+	private static Map<FriendPair, Friend> cache;
 
 	public FriendDAO(Connection conn, DatabaseManager dbm) 
 	{
@@ -270,7 +270,7 @@ public class FriendDAO
 	 * 
 	 * @throws SQLException
 	 */
-	void clear() throws SQLException 
+	static void clear() throws SQLException 
 	{
 		Statement stmt = conn.createStatement();
 		String s = "delete from FRIEND";

@@ -21,9 +21,9 @@ import facebook.database.model.*;
 
 public class PostDAO 
 {
-	private Connection conn;
+	private static Connection conn;
 	private DatabaseManager dbm;
-	private Map<Integer, Post> cache;
+	private static Map<Integer, Post> cache;
 	
 	public PostDAO(Connection conn, DatabaseManager dbm)
 	{
@@ -161,7 +161,7 @@ public class PostDAO
 	 * 
 	 * @throws SQLException
 	 */
-	void clear() throws SQLException 
+	static void clear() throws SQLException 
 	{
 		Statement stmt = conn.createStatement();
 		String s = "delete from POST";
