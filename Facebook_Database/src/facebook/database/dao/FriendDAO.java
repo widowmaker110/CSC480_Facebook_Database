@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 
 import facebook.database.model.*;
 
@@ -18,16 +20,51 @@ import facebook.database.model.*;
  */
 public class FriendDAO 
 {
+	/**
+	 * This class represents a key as a single object.
+	 * It is only needed because the FRIEND table has a
+	 * compound key (both department id and course number)
+	 * 
+	 * @author Alexander Miller, Congshu Wang
+	 */
+	private static class FriendPair 
+	{
+		public int user1, user2;
+
+		public FriendPair(int user1ID, int user2ID) 
+		{
+			this.user1 = user1ID;
+			this.user2 = user2ID;
+		}
+
+		@Override
+		public int hashCode() 
+		{
+			return 31 * user1 + user2;
+		}
+
+		@Override
+		public boolean equals(Object obj) 
+		{
+			if (this == obj)
+				return true;
+			if (obj == null || !(obj instanceof FriendPair))
+				return false;
+			FriendPair other = (FriendPair) obj;
+			return user1 == other.user1 && user2 == other.user2;
+		}
+	}
 	
 	private Connection conn;
 	private DatabaseManager dbm;
-	//private Map<DeptNumPair, Course> cache;
+	// unique ID and object paired in a hashmap
+	private Map<FriendPair, Friend> cache;
 
 	public FriendDAO(Connection conn, DatabaseManager dbm) 
 	{
 		this.conn = conn;
 		this.dbm = dbm;
-		//this.cache = new HashMap<DeptNumPair, Course>();
+		this.cache = new HashMap<FriendPair, Friend>();
 	}
 	
 	/**
@@ -83,12 +120,15 @@ public class FriendDAO
 	 */
 	public Friend find(int user1ID, int user2ID) 
 	{
-		//TODO fix this once the caching is fixed.
-//		DeptNumPair deptNum = new DeptNumPair(deptid, num);
-//		if (cache.containsKey(deptNum)) return cache.get(deptNum);
+		// if its already in the cache, return it.
+		if (cache.containsKey(user1ID)) 
+			return cache.get(user1ID);
+		else if(cache.containsKey(user2ID))
+			return cache.get(user2ID);
 		
-		try {
-			//TODO change this query
+		// else, do the full retrieval
+		try 
+		{
 			// select all but primary key
 			String qry = "select friendSince, friendRequestPending, friendRequestCaneled, friendRequestComplete "
 					+ "where friend1 = ? and friend2 = ?";
@@ -115,11 +155,13 @@ public class FriendDAO
 			
 			Friend friend = new Friend(user1ID, user2ID, friendSince, friendRequestPending, friendRequestCaneled, friendRequestComplete);
 			
-			//cache.put(deptNum, course);
+			cache.put(new FriendPair(user1ID, user2ID), friend);
 			return friend;
-		} catch (SQLException e) {
+		} 
+		catch (SQLException e) 
+		{
 			dbm.cleanup();
-			throw new RuntimeException("error finding course", e);
+			throw new RuntimeException("error finding friend", e);
 		}
 	}
 	
@@ -138,11 +180,11 @@ public class FriendDAO
 			boolean friendRequestPending, boolean friendRequestCaneled, boolean friendRequestComplete) 
 	{
 		
-		try {
-			// TODO
-			// make sure that the dept, num pair is currently unused
-//			if (find(dept.getDeptId(), num) != null)
-//				return null;
+		try 
+		{
+			// make sure that the friend is currently unused
+			if (find(user1.getUserId(), user2.getUserId()) != null)
+				return null;
 			
 			String cmd = "insert into FRIEND(friend1, friend2, "
 						+ "friendSince, "
@@ -163,14 +205,13 @@ public class FriendDAO
 			
 			Friend friend = new Friend(user1.getUserId(), user2.getUserId(), friendSince, friendRequestPending, friendRequestCaneled, friendRequestComplete);
 			
-			// TODO
-//			cache.put(new DeptNumPair(dept.getDeptId(), num), course);
+			cache.put(new FriendPair(user1.getUserId(), user2.getUserId()), friend);
 			return friend;
 		}
 		catch(SQLException e) 
 		{
 			dbm.cleanup();
-			throw new RuntimeException("error inserting new course", e);
+			throw new RuntimeException("error inserting new friend", e);
 		}
 	}
 
@@ -220,19 +261,20 @@ public class FriendDAO
 		catch(SQLException e) 
 		{
 			dbm.cleanup();
-			throw new RuntimeException("error changing faculty", e);
+			throw new RuntimeException("error changing friend", e);
 		}
 	}
 
 	/**
-	 * Clear all data from the Course table.
+	 * Clear all data from the Friend table.
 	 * 
 	 * @throws SQLException
 	 */
-	void clear() throws SQLException {
+	void clear() throws SQLException 
+	{
 		Statement stmt = conn.createStatement();
 		String s = "delete from FRIEND";
 		stmt.executeUpdate(s);
-		//cache.clear();
+		cache.clear();
 	}
 }
