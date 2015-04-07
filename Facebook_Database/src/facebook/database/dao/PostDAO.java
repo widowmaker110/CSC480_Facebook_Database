@@ -25,6 +25,7 @@ public class PostDAO
 	private DatabaseManager dbm;
 	private static Map<Integer, Post> cache;
 	
+	@SuppressWarnings("static-access")
 	public PostDAO(Connection conn, DatabaseManager dbm)
 	{
 		this.conn = conn;
@@ -65,6 +66,10 @@ public class PostDAO
 		Statement stmt = conn.createStatement();
 		String s = "alter table POST add constraint fk_postuser "
 				+ "foreign key(postId) references USER on delete cascade";
+		stmt.executeUpdate(s);
+		
+		// CHECKS
+		s = "check(userId > 0), check(postId > 0)";
 		stmt.executeUpdate(s);
 	}
 	

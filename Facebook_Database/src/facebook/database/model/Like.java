@@ -6,6 +6,7 @@ import facebook.database.dao.LikeDAO;;
 
 public class Like 
 {
+	@SuppressWarnings("unused")
 	private LikeDAO dao;
 	private int likeId;
 	private int userId;

@@ -2,18 +2,18 @@ package facebook.database.model;
 
 import java.util.Date;//for date type
 
-import java.util.Collection;
-
 import facebook.database.dao.FriendDAO;
 
 public class Friend
 {
+	@SuppressWarnings("unused")
 	private FriendDAO dao;
 	private int friend1; //friend request sender
 	private int friend2; //friend request recipient
 	private Date friendSince;
 	private boolean friendRequestPending;
 	private boolean friendRequestCancelled;
+	@SuppressWarnings("unused")
 	private boolean friendRequestComplete;
 	private String status;
 	

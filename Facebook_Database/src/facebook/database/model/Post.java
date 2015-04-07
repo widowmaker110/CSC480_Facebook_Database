@@ -6,6 +6,7 @@ import facebook.database.dao.PostDAO;;;
 
 public class Post 
 {
+	@SuppressWarnings("unused")
 	private PostDAO dao;
 	private int postId;
 	private int userId;

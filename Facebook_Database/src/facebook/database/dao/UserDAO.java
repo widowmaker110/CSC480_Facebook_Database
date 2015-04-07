@@ -1,7 +1,6 @@
 package facebook.database.dao;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,8 +24,9 @@ public class UserDAO
 	
 	private static Connection conn;
 	private DatabaseManager dbm;
-	private Map<Integer, User> cache;
+	private static Map<Integer, User> cache;
 
+	@SuppressWarnings("static-access")
 	public UserDAO(Connection conn, DatabaseManager dbm) 
 	{
 		this.conn = conn;
@@ -55,29 +55,40 @@ public class UserDAO
 	}
 	
 	/**
+	 * Modify the User table to add foreign key constraints
+	 * (needs to happen after the other tables have been created)
+	 * 
+	 * @param conn
+	 * @throws SQLException
+	 */
+	static void addConstraints(Connection conn) throws SQLException 
+	{
+		Statement stmt = conn.createStatement();
+		String s = "check(userId > 0), check(email like '_%@_%._%')";
+		stmt.executeUpdate(s);
+	}
+	
+	/**	
 	 * Retrieve a User object given its key. Checks the cache first,
 	 * then executes SQL query if object not already present.
 	 * 
-	 * @param deptid
-	 * @param num
-	 * @return the User object, or null if not found
+	 * @param userId
+	 * @return User object with the given attritbutes. Null if not found
 	 */
-	public User find(int user1ID, int user2ID) 
+	public User find(int userId) 
 	{
-		if (cache.containsKey(user1ID)) return cache.get(user1ID);
-		if (cache.containsKey(user2ID)) return cache.get(user2ID);
+		if (cache.containsKey(userId)) 
+			return cache.get(userId);
 		
-		try {
-			//TODO change this query
-			// select all but primary key
-			String qry = "select friendSince, friendRequestPending, friendRequestCaneled, friendRequestComplete "
-					+ "where friend1 = ? and friend2 = ?";
+		try 
+		{
+			String qry = "select userId, userName, password, email "
+					+ "where userId = ?";
 			
 			PreparedStatement pstmt = conn.prepareStatement(qry);
 			
-			pstmt.setInt(1, user1ID);
-			pstmt.setInt(2, user2ID);
-			
+			pstmt.setInt(1, userId);
+
 			ResultSet rs = pstmt.executeQuery();
 
 			// return null if course doesn't exist
@@ -85,26 +96,26 @@ public class UserDAO
 				return null;
 
 			// grab all of the fields
-			//User user1 = dbm.findDepartment(deptid);
-			Date friendSince = rs.getDate("friendSince");
-			boolean friendRequestPending = rs.getBoolean("friendRequestPending");
-			boolean friendRequestCaneled = rs.getBoolean("friendRequestCaneled");
-			boolean friendRequestComplete = rs.getBoolean("friendRequestComplete");
+			String userName = rs.getString("userName");
+			String password = rs.getString("password");
+			String email = rs.getString("email");
 			
 			rs.close();
 			
-			Friend friend = new Friend(user1ID, user2ID, friendSince, friendRequestPending, friendRequestCaneled, friendRequestComplete);
+			User user = new User(this, userId, userName, password, email);
 			
-			//cache.put(deptNum, course);
-			return friend;
-		} catch (SQLException e) {
+			cache.put(userId, user);
+			return user;
+		} 
+		catch (SQLException e) 
+		{
 			dbm.cleanup();
 			throw new RuntimeException("error finding course", e);
 		}
 	}
 	
 	/**
-	 * Insert a Friend object into the FRIEND table given the attributes
+	 * Insert a User object into the FRIEND table given the attributes
 	 * 
 	 * @param user1 int
 	 * @param user2 int 
@@ -114,93 +125,35 @@ public class UserDAO
 	 * @param friendRequestComplete boolean
 	 * @return the new Friend object, or null if key already exists
 	 */
-	public Friend insert(User user1, User user2, Date friendSince, 
-			boolean friendRequestPending, boolean friendRequestCaneled, boolean friendRequestComplete) 
-	{
-		
-		try {
-			// TODO
-			// make sure that the dept, num pair is currently unused
-//			if (find(dept.getDeptId(), num) != null)
-//				return null;
-			
-			String cmd = "insert into FRIEND(friend1, friend2, "
-						+ "friendSince, "
-						+ "friendRequestPending, friendRequestCaneled, friendRequestComplete) "
-						+ 
-						"values(?, ?, ?, ?, ?, ?)";
-			
-			PreparedStatement pstmt = conn.prepareStatement(cmd);
-			
-			pstmt.setInt(1, user1.getUserId()); 		// friend1
-			pstmt.setInt(2, user2.getUserId()); 		// friend2
-			pstmt.setDate(3, friendSince);     		 	// friendSince
-			pstmt.setBoolean(4, friendRequestPending);  // friendRequestPending
-			pstmt.setBoolean(5, friendRequestCaneled);  // friendRequestCaneled
-			pstmt.setBoolean(6, friendRequestComplete); // friendRequestComplete
-			
-			pstmt.executeUpdate();
-			
-			Friend friend = new Friend(user1.getUserId(), user2.getUserId(), friendSince, friendRequestPending, friendRequestCaneled, friendRequestComplete);
-			
-			// TODO
-//			cache.put(new DeptNumPair(dept.getDeptId(), num), course);
-			return friend;
-		}
-		catch(SQLException e) 
-		{
-			dbm.cleanup();
-			throw new RuntimeException("error inserting new course", e);
-		}
-	}
-
-	/**
-	 * Changing the status of two user's and their given friend relationship
-	 * 
-	 * @param user1ID int id of user 1
-	 * @param user2ID int id of user 2
-	 * @param changeType int describing change in friendshipStatus. 
-	 *    1 = Pending
-	 *    2 = Canceled
-	 *    3 = Complete
-	 */
-	public void changeFriendStatus(int user1ID, int user2ID, int changeType, boolean status)
-	{
-		 // define which changeType is appropriate
-		String set = "set";
-		switch(changeType)
-		{
-			default:
-			case 1:
-				// same as "set friendRequestPending = ?"
-				set = set + " friendRequestPending = ?";
-				break;
-			case 2:
-				set = set + " friendRequestCaneled = ?";
-				break;
-			case 3:
-				set = set + " friendRequestComplete = ?";
-				break;
-		}
-		
+	public User insert(int userId, String username, String password, String email) 
+	{		
 		try 
 		{
-			String cmd = "update FRIEND "
-					+ set
-					+ "where friend1 = ? and friend2 = ?";
+			if (find(userId) != null)
+				return null;
+			
+			String cmd = "insert into USER(userId, userName, password, email) "
+						+ 
+						"values(?, ?, ?, ?)";
 			
 			PreparedStatement pstmt = conn.prepareStatement(cmd);
 			
-			pstmt.setBoolean(1, status); // false or true for any of the given friendshipStatuses.
-			pstmt.setInt(2, user1ID);    // ID number of user 1
-			pstmt.setInt(3, user2ID);    // ID number of user 2
-			
+			pstmt.setInt(1, userId); 		// userId
+			pstmt.setString(2, username);   // username
+			pstmt.setString(3, password);  	// password
+			pstmt.setString(4, email);  	// email
+		
 			pstmt.executeUpdate();
+			
+			User user = new User(this, userId, username, password, email);
+			
+			cache.put(userId, user);
+			return user;
 		}
 		catch(SQLException e) 
 		{
 			dbm.cleanup();
-			throw new RuntimeException("error changing faculty", e);
+			throw new RuntimeException("error inserting new user", e);
 		}
 	}
 
@@ -211,8 +164,8 @@ public class UserDAO
 	 */
 	static void clear() throws SQLException {
 		Statement stmt = conn.createStatement();
-		String s = "delete from FRIEND";
+		String s = "delete from USER";
 		stmt.executeUpdate(s);
-		//cache.clear();
+		cache.clear();
 	}
 }

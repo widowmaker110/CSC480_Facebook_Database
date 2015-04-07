@@ -1,11 +1,10 @@
 package facebook.database.model;
 
-import java.util.Collection;
-
 import facebook.database.dao.UserDAO;
 
 public class User 
 {
+	@SuppressWarnings("unused")
 	private UserDAO dao;
 	private int userId;
 	private String userName;

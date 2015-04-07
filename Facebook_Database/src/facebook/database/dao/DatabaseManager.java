@@ -5,18 +5,21 @@ import java.sql.Driver;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import facebook.database.model.*;
-
 import org.apache.derby.jdbc.EmbeddedDriver;
 
 public class DatabaseManager 
 {
 	private Driver driver;
 	private Connection conn;
+	@SuppressWarnings("unused")
 	private CommentDAO commentDao;
+	@SuppressWarnings("unused")
 	private FriendDAO friendDao;
+	@SuppressWarnings("unused")
 	private LikeDAO likeDao;
+	@SuppressWarnings("unused")
 	private PostDAO postDao;
+	@SuppressWarnings("unused")
 	private UserDAO userDao;
 	
 	private final String url = "jdbc:derby:collegedb";
@@ -32,19 +35,23 @@ public class DatabaseManager
 		prop.put("create", "false");
 		
 		// try to connect to an existing database
-		try {
+		try 
+		{
 			conn = driver.connect(url, prop);
 			conn.setAutoCommit(false);
 		}
-		catch(SQLException e) {
+		catch(SQLException e) 
+		{
 			// database doesn't exist, so try creating it
-			try {
+			try 
+			{
 				prop.put("create", "true");
 				conn = driver.connect(url, prop);
 				conn.setAutoCommit(false);
 				create(conn);
 			}
-			catch (SQLException e2) {
+			catch (SQLException e2) 
+			{
 				throw new RuntimeException("cannot connect to database", e2);
 			}
 		}
@@ -79,16 +86,19 @@ public class DatabaseManager
 	}
 	
 	//***************************************************************
-	// Utility functions
+	// <Utility functions>
 		
 		/**
 		 * Commit changes since last call to commit
 		 */
-		public void commit() {
-			try {
+		public void commit() 
+		{
+			try 
+			{
 				conn.commit();
 			}
-			catch(SQLException e) {
+			catch(SQLException e) 
+			{
 				throw new RuntimeException("cannot commit database", e);
 			}
 		}
@@ -96,12 +106,15 @@ public class DatabaseManager
 		/**
 		 * Abort changes since last call to commit, then close connection
 		 */
-		public void cleanup() {
-			try {
+		public void cleanup() 
+		{
+			try 
+			{
 				conn.rollback();
 				conn.close();
 			}
-			catch(SQLException e) {
+			catch(SQLException e) 
+			{
 				System.out.println("fatal error: cannot cleanup connection");
 			}
 		}
@@ -109,20 +122,26 @@ public class DatabaseManager
 		/**
 		 * Close connection and shutdown database
 		 */
-		public void close() {
-			try {
+		public void close() 
+		{
+			try 
+			{
 				conn.close();
 			}
-			catch(SQLException e) {
+			catch(SQLException e) 
+			{
 				throw new RuntimeException("cannot close database connection", e);
 			}
 			
 			// Now shutdown the embedded database system -- this is Derby-specific
-			try {
+			try 
+			{
 				Properties prop = new Properties();
 				prop.put("shutdown", "true");
 				conn = driver.connect(url, prop);
-			} catch (SQLException e) {
+			} 
+			catch (SQLException e) 
+			{
 				// This is supposed to throw an exception...
 				System.out.println("Derby has shut down successfully");
 			}
@@ -150,6 +169,6 @@ public class DatabaseManager
 			}
 		}
 		
-		// Utility functions
+		// </Utility functions>
 		//***************************************************************
 }

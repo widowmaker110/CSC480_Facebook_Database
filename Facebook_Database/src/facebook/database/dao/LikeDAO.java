@@ -25,6 +25,7 @@ public class LikeDAO
 	private DatabaseManager dbm;
 	private static Map<Integer, Like> cache;
 	
+	@SuppressWarnings("static-access")
 	public LikeDAO(Connection conn, DatabaseManager dbm)
 	{
 		this.conn = conn;
@@ -65,6 +66,10 @@ public class LikeDAO
 		stmt.executeUpdate(s);
 		s = "alter table LIKE add constraint fk_likepost "
 				+ "foreign key(postId) references POST on delete cascade";
+		stmt.executeUpdate(s);
+		
+		// CHECKS
+		s = "check(likeId > 0), check(userId > 0), check(postId > 0)";
 		stmt.executeUpdate(s);
 	}
 	

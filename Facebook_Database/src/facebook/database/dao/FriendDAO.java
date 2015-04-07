@@ -60,6 +60,7 @@ public class FriendDAO
 	// unique ID and object paired in a hashmap
 	private static Map<FriendPair, Friend> cache;
 
+	@SuppressWarnings("static-access")
 	public FriendDAO(Connection conn, DatabaseManager dbm) 
 	{
 		this.conn = conn;
@@ -107,6 +108,10 @@ public class FriendDAO
 		
 		s = "alter table FRIEND add constraint fk_frienduser2 "
 				+ "foreign key(friend2) references User on delete cascade";
+		stmt.executeUpdate(s);
+		
+		// CHECKS
+		s = "check(friend1 > 0), check(freidn2 > 0)";
 		stmt.executeUpdate(s);
 	}
 	

@@ -61,12 +61,20 @@ public class CommentDAO
 	static void addConstraints(Connection conn) throws SQLException 
 	{
 		Statement stmt = conn.createStatement();
+		
+		// DELETE ON CASCADE
 		String s = "alter table COMMENT add constraint fk_comuser "
 				+ "foreign key(userId) references USER on delete cascade";
 		stmt.executeUpdate(s);
+		
 		s = "alter table COMMENT add constraint fk_compost "
 				+ "foreign key(postId) references POST on delete cascade";
 		stmt.executeUpdate(s);
+		
+		// CHECKS
+		s = "check(userId > 0), check(postId > 0), check(commentId > 0)";
+		stmt.executeUpdate(s);
+		
 	}
 	
 	/**
