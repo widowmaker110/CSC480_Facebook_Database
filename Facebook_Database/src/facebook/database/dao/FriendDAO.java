@@ -136,6 +136,7 @@ public class FriendDAO
 		{
 			// select all but primary key
 			String qry = "select friendSince, friendRequestPending, friendRequestCaneled, friendRequestComplete "
+					+ "from FRIEND "
 					+ "where friend1 = ? and friend2 = ?";
 			
 			PreparedStatement pstmt = conn.prepareStatement(qry);

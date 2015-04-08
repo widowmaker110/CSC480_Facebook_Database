@@ -1,7 +1,7 @@
 ----------------------------------------------------------------
-Wed Apr 08 16:21:39 EDT 2015:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.7.1.1 - (1040133): instance a816c00e-014c-9ab2-00bb-00000713cd90 
-on database directory C:\Users\Alexander\Desktop\CSC480_Facebook_Database\Facebook_Database\facebookDB  with class loader sun.misc.Launcher$AppClassLoader@73d16e93 
+Wed Apr 08 16:50:12 EDT 2015:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.7.1.1 - (1040133): instance a816c00e-014c-9acc-230b-000007130458 
+on database directory C:\Users\Alexander\Desktop\CSC480_Facebook_Database\Facebook_Database\facebookDB482015  with class loader sun.misc.Launcher$AppClassLoader@73d16e93 
 Loaded from file:/C:/Users/Alexander/Desktop/CSC480_Facebook_Database/Facebook_Database/derby.jar
 java.vendor=Oracle Corporation
 java.runtime.version=1.8.0_31-b13

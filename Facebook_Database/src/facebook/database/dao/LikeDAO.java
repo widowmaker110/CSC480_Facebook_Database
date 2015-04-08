@@ -86,7 +86,7 @@ public class LikeDAO
 			return cache.get(likeId);
 		try
 		{
-			String qry = "select userId, postId, likeDate where likeId = ?";
+			String qry = "select userId, postId, likeDate from LIKE where likeId = ?";
 			PreparedStatement pstmt = conn.prepareStatement(qry);
 			pstmt.setInt(1, likeId);
 			ResultSet rs = pstmt.executeQuery();

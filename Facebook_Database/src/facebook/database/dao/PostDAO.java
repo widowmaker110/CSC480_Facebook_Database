@@ -86,7 +86,7 @@ public class PostDAO
 			return cache.get(postId2);
 		try
 		{
-			String qry = "select postId, userId, postDate, postText, postImage, postVideo where postId = ?";
+			String qry = "select postId, userId, postDate, postText, postImage, postVideo from POST where postId = ?";
 			PreparedStatement pstmt = conn.prepareStatement(qry);
 			pstmt.setInt(1, postId2);
 			ResultSet rs = pstmt.executeQuery();

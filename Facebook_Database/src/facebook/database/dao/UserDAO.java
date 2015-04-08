@@ -81,6 +81,7 @@ public class UserDAO
 		try 
 		{
 			String qry = "select userId, userName, password, email "
+					+ "from USER "
 					+ "where userId = ?";
 			
 			PreparedStatement pstmt = conn.prepareStatement(qry);
