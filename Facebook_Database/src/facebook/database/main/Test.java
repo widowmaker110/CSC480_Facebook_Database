@@ -11,7 +11,7 @@ import facebook.database.model.*;
  * @version 4/7/2015
  * @author Alexander Miller, Congshu Wang
  */
-public class Test {
+public class Test { 
 
 	// http://alvinalexander.com/java/java-current-date-example-now
 	private static java.sql.Date getCurrentDate()
