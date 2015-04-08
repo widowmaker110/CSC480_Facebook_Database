@@ -21,10 +21,11 @@ import facebook.database.model.*;
 
 public class CommentDAO 
 {
-	private Connection conn;
-	private DatabaseManager dbm;
-	private Map<Integer, Comment> cache;
+	private static Connection conn;
+	private static DatabaseManager dbm;
+	private static Map<Integer, Comment> cache;
 	
+	@SuppressWarnings("static-access")
 	public CommentDAO(Connection conn, DatabaseManager dbm)
 	{
 		this.conn = conn;
@@ -84,7 +85,7 @@ public class CommentDAO
 	 * @param commentId
 	 * @return the Comment object, or null if not found
 	 */
-	public Comment find(int commentId)
+	public static Comment find(int commentId)
 	{
 		if(cache.containsKey(commentId))
 			return cache.get(commentId);
@@ -105,7 +106,7 @@ public class CommentDAO
 			String commentText = rs.getString("commentText");
 			rs.close();
 			
-			Comment comment = new Comment(this, commentId, userId, postId, commentDate, commentText);
+			Comment comment = new Comment(commentId, userId, postId, commentDate, commentText);
 			
 			cache.put(commentId, comment);
 			return comment;
@@ -117,17 +118,24 @@ public class CommentDAO
 		}
 	}
 	
+	// http://alvinalexander.com/java/java-current-date-example-now
+	private static java.sql.Date convertDate(java.util.Date current)
+	{
+		java.sql.Date date = new java.sql.Date(current.getTime());
+		return date;
+	}
+	
 	/**
 	 * Add a new Comment with the given attributes.
 	 * 
 	 * @param commentId
 	 * @param userId
 	 * @param postId
-	 * @param commentDate
+	 * @param date
 	 * @param commentText
 	 * @return the new Comment object, or null if key already exists
 	 */
-	public Comment insert(int commentId, int userId, int postId, Date commentDate, String commentText)
+	public static Comment insert(int commentId, int userId, int postId, java.util.Date date, String commentText)
 	{
 		try
 		{
@@ -140,11 +148,11 @@ public class CommentDAO
 			pstmt.setInt(1, commentId);
 			pstmt.setInt(2, userId);
 			pstmt.setInt(3, postId);
-			pstmt.setDate(4, commentDate);
+			pstmt.setDate(4, convertDate(date));
 			pstmt.setString(5, commentText);
 			pstmt.executeUpdate();
 			
-			Comment comment = new Comment(this, commentId, userId, postId, commentDate, commentText);
+			Comment comment = new Comment(commentId, userId, postId, date, commentText);
 			
 			cache.put(commentId, comment);
 			return comment;

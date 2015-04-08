@@ -22,7 +22,7 @@ import facebook.database.model.*;
 public class LikeDAO 
 {
 	private static Connection conn;
-	private DatabaseManager dbm;
+	private static DatabaseManager dbm;
 	private static Map<Integer, Like> cache;
 	
 	@SuppressWarnings("static-access")
@@ -80,7 +80,7 @@ public class LikeDAO
 	 * @param likeId
 	 * @return the Like object, or null if not found
 	 */
-	public Like find(int likeId)
+	public static Like find(int likeId)
 	{
 		if(cache.containsKey(likeId))
 			return cache.get(likeId);
@@ -99,7 +99,7 @@ public class LikeDAO
 			Date likeDate = rs.getDate("likeDate");
 			rs.close();
 			
-			Like like = new Like(this, likeId, userId, postId, likeDate);
+			Like like = new Like(likeId, userId, postId, likeDate);
 			
 			cache.put(likeId, like);
 			return like;
@@ -111,16 +111,23 @@ public class LikeDAO
 		}
 	}
 
+	// http://alvinalexander.com/java/java-current-date-example-now
+	private static java.sql.Date convertDate(java.util.Date current)
+	{
+		java.sql.Date date = new java.sql.Date(current.getTime());
+		return date;
+	}
+	
 	/**
 	 * Insert a Like object into the LIKE table given the attributes
 	 * 
 	 * @param likeId
 	 * @param userId
 	 * @param postId
-	 * @param likeDate
+	 * @param date
 	 * @return Like objected which is newly inserted
 	 */
-	public Like insert(int likeId, int userId, int postId, Date likeDate) 
+	public static Like insert(int likeId, int userId, int postId, java.util.Date date) 
 	{
 		
 		try 
@@ -137,11 +144,11 @@ public class LikeDAO
 			pstmt.setInt(1, userId); 		// userId
 			pstmt.setInt(2, likeId);		// likeId
 			pstmt.setInt(3, postId); 		// postId
-			pstmt.setDate(4, likeDate);     // likeDate
+			pstmt.setDate(4, convertDate(date));     // likeDate
 			
 			pstmt.executeUpdate();
 			
-			Like like = new Like(this, likeId, userId, postId, likeDate);
+			Like like = new Like(likeId, userId, postId, date);
 			
 			cache.put(likeId, like);
 			return like;

@@ -23,9 +23,9 @@ public class Like
 	 * @param user
 	 * @param post
 	 */
-	public Like(LikeDAO dao, int likeId, int userId, int postId, Date likeDate)
+	public Like(/*LikeDAO dao,*/ int likeId, int userId, int postId, Date likeDate)
 	{
-		this.dao = dao;
+		//this.dao = dao;
 		this.likeId = likeId;
 		this.likeDate = likeDate;
 		this.userId = userId;

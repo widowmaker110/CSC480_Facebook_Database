@@ -13,7 +13,6 @@ public class Friend
 	private Date friendSince;
 	private boolean friendRequestPending;
 	private boolean friendRequestCancelled;
-	@SuppressWarnings("unused")
 	private boolean friendRequestComplete;
 	private String status;
 	
@@ -32,9 +31,9 @@ public class Friend
 		this.friend1 = friend1;
 		this.friend2 = friend2;
 		this.friendSince = friendSince;
-		this.friendRequestPending = friendRequestPending;
-		this.friendRequestCancelled = friendRequestCancelled;
-		this.friendRequestComplete = friendRequestComplete;
+		this.setFriendRequestPending(friendRequestPending);
+		this.setFriendRequestCancelled(friendRequestCancelled);
+		this.setFriendRequestComplete(friendRequestComplete);
 	}
 	
 	public int getRequestSender()
@@ -54,11 +53,11 @@ public class Friend
 	
 	public String getFriendRequestStatus()
 	{
-		if(friendRequestPending == true)
+		if(isFriendRequestPending() == true)
 			status = "Friend Request Pending.";
-		else if(friendRequestCancelled == true)
+		else if(isFriendRequestCancelled() == true)
 			status = "Friend Request Cancelled.";
-		else if(friendRequestComplete = true)
+		else if(setFriendRequestComplete(true))
 			status = "Friend Request Complete.";
 		else
 			status = "Error Status!";
@@ -69,5 +68,30 @@ public class Friend
 	{
 		status = newStatus;
 		//dao.changeFriendRequestStatus(...);
+	}
+
+	public boolean isFriendRequestPending() {
+		return friendRequestPending;
+	}
+
+	public void setFriendRequestPending(boolean friendRequestPending) {
+		this.friendRequestPending = friendRequestPending;
+	}
+
+	public boolean isFriendRequestCancelled() {
+		return friendRequestCancelled;
+	}
+
+	public void setFriendRequestCancelled(boolean friendRequestCancelled) {
+		this.friendRequestCancelled = friendRequestCancelled;
+	}
+
+	public boolean isFriendRequestComplete() {
+		return friendRequestComplete;
+	}
+
+	public boolean setFriendRequestComplete(boolean friendRequestComplete) {
+		this.friendRequestComplete = friendRequestComplete;
+		return friendRequestComplete;
 	}
 }

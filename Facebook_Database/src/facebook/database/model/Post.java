@@ -24,9 +24,9 @@ public class Post
 	 * @param postImage
 	 * @param postVideo
 	 */
-	public Post(PostDAO dao, int postId, int userId, Date postDate, String postText, String postImage, String postVideo)
+	public Post(/*PostDAO dao,*/ int postId, int userId, Date postDate, String postText, String postImage, String postVideo)
 	{
-		this.dao = dao;
+		//this.dao = dao;
 		this.setUserId(userId);
 		this.postId = postId;
 		this.postDate = postDate;

@@ -24,9 +24,9 @@ public class Comment
 	 * @param user
 	 * @param post
 	 */
-	public Comment(CommentDAO dao, int commentId, int userId, int postId, Date commentDate, String commentContext /*, User user, Post post*/)
+	public Comment(/*CommentDAO dao,*/ int commentId, int userId, int postId, Date commentDate, String commentContext /*, User user, Post post*/)
 	{
-		this.dao = dao;
+		//this.dao = dao;
 		this.commentId = commentId;
 		this.userId = userId;
 		this.postId = postId;

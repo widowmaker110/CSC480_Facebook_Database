@@ -3,9 +3,12 @@ package facebook.database.dao;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.Properties;
 
 import org.apache.derby.jdbc.EmbeddedDriver;
+
+import facebook.database.model.*;
 
 public class DatabaseManager 
 {
@@ -83,6 +86,65 @@ public class DatabaseManager
 		PostDAO.addConstraints(conn);
 		
 		conn.commit();
+	}
+	
+	//***************************************************************
+	// Data retrieval functions -- find a model object given its key
+		
+	public User findUser(int userId) 
+	{
+		return UserDAO.find(userId);
+	}
+
+	public Friend findFriend(int user1Id, int user2Id) 
+	{
+		return FriendDAO.find(user1Id, user2Id);
+	}
+
+	public Like findLike(int likeId) 
+	{
+		return LikeDAO.find(likeId);
+	}
+		
+	public Post findPost(int postId, int userId) 
+	{
+		return PostDAO.find(postId, userId);
+	}
+	
+	public Comment findComment(int commentId, int userId)
+	{
+		return CommentDAO.find(commentId);
+	}
+	
+	// TODO implement methods to find objects by other attributes other than
+	// via unique identifier (e.g. findPost by date)
+
+	//***************************************************************
+	// Data insertion functions -- create new model object from attributes
+		
+	public User insertUser(int userId, String username, String password, String email) 
+	{
+		return UserDAO.insert(userId, username, password, email);
+	}
+	
+	public Comment insertComment(int commentId, int userId, int postId, Date date, String commentContext) 
+	{
+		return CommentDAO.insert(userId, userId, postId, date, commentContext);
+	}
+
+	public Friend insertFriend(int friend1, int friend2, Date date, boolean friendRequestPending, boolean friendRequestCancelled, boolean friendRequestComplete)
+	{
+		return FriendDAO.insert(friend1, friend2, date, friendRequestPending, friendRequestCancelled, friendRequestComplete);
+	}
+	
+	public Like insertLike(int likeId, int userId, int postId, Date date)
+	{
+		return LikeDAO.insert(likeId, userId, postId, date);
+	}
+	
+	public Post insertPost(int postId, int userId, Date date, String postText, String postImage, String postVideo)
+	{
+		return PostDAO.insert(postId, userId, date, postText, postImage, postVideo);
 	}
 	
 	//***************************************************************

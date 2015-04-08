@@ -56,7 +56,7 @@ public class FriendDAO
 	}
 	
 	private static Connection conn;
-	private DatabaseManager dbm;
+	private static DatabaseManager dbm;
 	// unique ID and object paired in a hashmap
 	private static Map<FriendPair, Friend> cache;
 
@@ -123,7 +123,7 @@ public class FriendDAO
 	 * @param num
 	 * @return the User object, or null if not found
 	 */
-	public Friend find(int user1ID, int user2ID) 
+	public static Friend find(int user1ID, int user2ID) 
 	{
 		// if its already in the cache, return it.
 		if (cache.containsKey(user1ID)) 
@@ -173,22 +173,22 @@ public class FriendDAO
 	/**
 	 * Insert a Friend object into the FRIEND table given the attributes
 	 * 
-	 * @param user1 int
-	 * @param user2 int 
+	 * @param friend1 int
+	 * @param friend2 int 
 	 * @param friendSince Date
 	 * @param friendRequestPending boolean
 	 * @param friendRequestCaneled boolean
 	 * @param friendRequestComplete boolean
 	 * @return the new Friend object, or null if key already exists
 	 */
-	public Friend insert(User user1, User user2, Date friendSince, 
+	public static Friend insert(int friend1, int friend2, java.util.Date friendSince, 
 			boolean friendRequestPending, boolean friendRequestCaneled, boolean friendRequestComplete) 
 	{
 		
 		try 
 		{
 			// make sure that the friend is currently unused
-			if (find(user1.getUserId(), user2.getUserId()) != null)
+			if (find(friend1, friend2) != null)
 				return null;
 			
 			String cmd = "insert into FRIEND(friend1, friend2, "
@@ -199,18 +199,18 @@ public class FriendDAO
 			
 			PreparedStatement pstmt = conn.prepareStatement(cmd);
 			
-			pstmt.setInt(1, user1.getUserId()); 		// friend1
-			pstmt.setInt(2, user2.getUserId()); 		// friend2
-			pstmt.setDate(3, friendSince);     		 	// friendSince
+			pstmt.setInt(1, friend1); 					// friend1
+			pstmt.setInt(2, friend2); 					// friend2
+			pstmt.setDate(3, (Date) friendSince);     		 	// friendSince
 			pstmt.setBoolean(4, friendRequestPending);  // friendRequestPending
 			pstmt.setBoolean(5, friendRequestCaneled);  // friendRequestCaneled
 			pstmt.setBoolean(6, friendRequestComplete); // friendRequestComplete
 			
 			pstmt.executeUpdate();
 			
-			Friend friend = new Friend(user1.getUserId(), user2.getUserId(), friendSince, friendRequestPending, friendRequestCaneled, friendRequestComplete);
+			Friend friend = new Friend(friend1, friend2, friendSince, friendRequestPending, friendRequestCaneled, friendRequestComplete);
 			
-			cache.put(new FriendPair(user1.getUserId(), user2.getUserId()), friend);
+			cache.put(new FriendPair(friend1, friend2), friend);
 			return friend;
 		}
 		catch(SQLException e) 

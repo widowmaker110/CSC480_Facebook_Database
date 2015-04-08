@@ -14,8 +14,6 @@ import facebook.database.model.*;
  * Data Access Object for the User table.
  * Encapsulates all of the relevant SQL commands.
  * 
- * NOTE: STILL UNDER CONSTRUCTION
- * 
  * @version 4/6/2015
  * @author Alexander Miller, Congshu Wang
  */
@@ -23,7 +21,7 @@ public class UserDAO
 {
 	
 	private static Connection conn;
-	private DatabaseManager dbm;
+	private static DatabaseManager dbm;
 	private static Map<Integer, User> cache;
 
 	@SuppressWarnings("static-access")
@@ -75,7 +73,7 @@ public class UserDAO
 	 * @param userId
 	 * @return User object with the given attritbutes. Null if not found
 	 */
-	public User find(int userId) 
+	public static User find(int userId) 
 	{
 		if (cache.containsKey(userId)) 
 			return cache.get(userId);
@@ -102,7 +100,7 @@ public class UserDAO
 			
 			rs.close();
 			
-			User user = new User(this, userId, userName, password, email);
+			User user = new User(userId, userName, password, email);
 			
 			cache.put(userId, user);
 			return user;
@@ -125,7 +123,7 @@ public class UserDAO
 	 * @param friendRequestComplete boolean
 	 * @return the new Friend object, or null if key already exists
 	 */
-	public User insert(int userId, String username, String password, String email) 
+	public static User insert(int userId, String username, String password, String email) 
 	{		
 		try 
 		{
@@ -145,7 +143,7 @@ public class UserDAO
 		
 			pstmt.executeUpdate();
 			
-			User user = new User(this, userId, username, password, email);
+			User user = new User(userId, username, password, email);
 			
 			cache.put(userId, user);
 			return user;

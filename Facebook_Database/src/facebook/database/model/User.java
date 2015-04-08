@@ -19,9 +19,9 @@ public class User
 	 * @param password
 	 * @param email
 	 */
-	public User(UserDAO dao, int userId, String userName, String password, String email)
+	public User(/*UserDAO dao,*/ int userId, String userName, String password, String email)
 	{
-		this.dao = dao;
+		//this.dao = dao;
 		this.userId = userId;
 		this.userName = userName;
 		this.password = password;

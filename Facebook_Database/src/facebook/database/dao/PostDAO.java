@@ -22,7 +22,7 @@ import facebook.database.model.*;
 public class PostDAO 
 {
 	private static Connection conn;
-	private DatabaseManager dbm;
+	private static DatabaseManager dbm;
 	private static Map<Integer, Post> cache;
 	
 	@SuppressWarnings("static-access")
@@ -80,7 +80,7 @@ public class PostDAO
 	 * @param likeId
 	 * @return the Like object, or null if not found
 	 */
-	public Post find(int postId2, int userId2, Date postDate2, String postText2, String postImage2, String postVideo2)
+	public static Post find(int postId2, int userId2)
 	{
 		if(cache.containsKey(postId2))
 			return cache.get(postId2);
@@ -102,7 +102,7 @@ public class PostDAO
 			String postVideo = rs.getString("postVideo");
 			rs.close();
 			
-			Post post = new Post(this, postId, userId, postDate, postText, postImage, postVideo);
+			Post post = new Post(postId, userId, postDate, postText, postImage, postVideo);
 			
 			cache.put(postId, post);
 			return post;
@@ -114,25 +114,31 @@ public class PostDAO
 		}
 	}
 
+	// http://alvinalexander.com/java/java-current-date-example-now
+	private static java.sql.Date convertDate(java.util.Date current)
+	{
+		java.sql.Date date = new java.sql.Date(current.getTime());
+		return date;
+	}
 
 	/**
 	 * Insert a Post object into the LIKE table given the attributes
 	 * 
 	 * @param postId2
 	 * @param userId2
-	 * @param postDate2
+	 * @param date
 	 * @param postText2
 	 * @param postImage2
 	 * @param postVideo2
 	 * @return the Post Object with the attributes given
 	 */
-	public Post insert(int postId2, int userId2, Date postDate2, String postText2, String postImage2, String postVideo2)
+	public static Post insert(int postId2, int userId2, java.util.Date date, String postText2, String postImage2, String postVideo2)
 	{
 		
 		try 
 		{
 			// make sure that the friend is currently unused
-			if (find(postId2, userId2, postDate2, postText2,  postImage2, postVideo2) != null)
+			if (find(postId2, userId2) != null)
 				return null;
 			
 			String cmd = "insert into LIKE(postId, userId, postDate, postText, postImage, postVideo) "
@@ -142,14 +148,14 @@ public class PostDAO
 			
 			pstmt.setInt(1, postId2); 			// postId
 			pstmt.setInt(2, userId2);			// userId
-			pstmt.setDate(3, postDate2); 		// postDate
+			pstmt.setDate(3, convertDate(date)); 		// postDate
 			pstmt.setString(4, postText2);     	// postText
 			pstmt.setString(5, postImage2);     // postImage
 			pstmt.setString(6, postVideo2);     // postVideo
 			
 			pstmt.executeUpdate();
 			
-			Post post = new Post(this, postId2, userId2, postDate2, postText2, postImage2, postVideo2);
+			Post post = new Post(postId2, userId2, date, postText2, postImage2, postVideo2);
 			
 			cache.put(postId2, post);
 			return post;
