@@ -47,7 +47,7 @@ public class UserDAO
 				+ "password varchar(30) not null, "
 				+ "email varchar(100) not null, "
 				
-				+ "primary key(userId)";
+				+ "primary key(userId))";
 		
 		stmt.executeUpdate(s);
 	}
@@ -108,7 +108,7 @@ public class UserDAO
 		catch (SQLException e) 
 		{
 			dbm.cleanup();
-			throw new RuntimeException("error finding course", e);
+			throw new RuntimeException("error finding user", e);
 		}
 	}
 	
@@ -156,7 +156,7 @@ public class UserDAO
 	}
 
 	/**
-	 * Clear all data from the Course table.
+	 * Clear all data from the User table.
 	 * 
 	 * @throws SQLException
 	 */

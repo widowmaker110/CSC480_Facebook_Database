@@ -47,8 +47,8 @@ public class PostDAO
 				+ "userId int not null, "
 				+ "postDate date not null, "
 				+ "postText varchar(1000) not null, "
-				+ "postImage varchar(256),"
-				+ "postVideo varchar(256),"
+				+ "postImage varchar(256), "
+				+ "postVideo varchar(256), "
 				
 				+ "primary key(postId))";
 		stmt.executeUpdate(s);
@@ -164,6 +164,45 @@ public class PostDAO
 		{
 			dbm.cleanup();
 			throw new RuntimeException("error inserting new friend", e);
+		}
+	}
+	
+	@SuppressWarnings("null")
+	public static int getCommentCountForPost(int postId)
+	{
+		// check cache of the CommentDAO
+		if(CommentDAO.getCommentCache().containsKey(postId))
+		{
+			// grab the comment hashmap object from the commentDAO cache
+			Map<Integer, Comment> CommentCache = CommentDAO.getCommentCache();
+			
+			// return the size of all comments related to a given post
+			return CommentCache.size();
+		}
+
+		// else, check database
+		try
+		{
+			// perform a query which asks the Comment table for the number of comments 
+			// for a given postId number.
+			String qry = "select commentId from COMMENT where postId = ?";
+			PreparedStatement pstmt = conn.prepareStatement(qry);
+			pstmt.setInt(1, postId);
+			ResultSet rs = pstmt.executeQuery();
+			
+			// return null if course doesn't exist
+			if (!rs.next())
+				return (Integer) null;
+			 
+			rs.last();
+            int numResults = rs.getRow();
+
+            return numResults;
+		}
+		catch (SQLException e)
+		{
+			dbm.cleanup();
+			throw new RuntimeException("error finding comment", e);
 		}
 	}
 	

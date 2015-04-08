@@ -3,6 +3,7 @@ package facebook.database.main;
 import java.util.Calendar;
 
 import facebook.database.dao.DatabaseManager;
+import facebook.database.dao.PostDAO;
 import facebook.database.model.*;
 
 /**
@@ -30,7 +31,7 @@ public class Test {
 		
 		DatabaseManager dbm = new DatabaseManager();
 		
-		dbm.clearTables();
+		//dbm.clearTables();
 		
 		// 1. create some dummy variables such as 4 users with a post each.
 		// USERS
@@ -84,12 +85,17 @@ public class Test {
 		dbm.commit();
 		
 		// example queries from our submission PDF
+
 //		- Given a post id, retrieve the following counts: how many comments were made and how
 //		many users liked it. Firstly give the number friends who liked the post and then one large
 //		sum of total users who might or might not be friends.
+		System.out.println("How many comments were made: " + PostDAO.getCommentCountForPost(1));
+		
 //		- Given a user id, list all of the friends with their most recent posts in the last 7 days.
+
 //		- Given a user id and year, retrieve a report of the date and activity total for
 //		each of that user’s likes and comments on posts not made by said user.
+
 //		- Given two user A and B, find out if A sent friend request to B before. If so, find out
 //		whether the friend request is completed, canceled or still pending.
 		

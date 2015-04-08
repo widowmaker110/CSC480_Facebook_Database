@@ -69,7 +69,7 @@ public class FriendDAO
 	}
 	
 	/**
-	 * Create the Course table via SQL
+	 * Create the Friend table via SQL
 	 * 
 	 * @param conn
 	 * @throws SQLException
@@ -83,9 +83,9 @@ public class FriendDAO
 				+ "friendSince date, "
 				+ "friendRequestPending boolean not null, "
 				+ "friendRequestCaneled boolean not null, "
-				+ "friendRequestComplete boolean not null, "
+				+ "friendRequestComplete boolean not null,"
 				
-				+ "primary key(friend1, friend2)";
+				+ "primary key(friend1, friend2))";
 		
 		stmt.executeUpdate(s);
 	}

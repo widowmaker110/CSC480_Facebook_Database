@@ -33,6 +33,11 @@ public class CommentDAO
 		this.cache = new HashMap<Integer, Comment>();
 	}
 	
+	public static Map<Integer, Comment> getCommentCache()
+	{
+		return CommentDAO.cache;
+	}
+	
 	/**
 	 * Create the Comment table via SQL
 	 * 
