@@ -1,6 +1,6 @@
 #CSC480_Facebook_Database
 
-TODO: Write a project description
+Project Assignemnt Description: "Write Java code to interface with the database you designed in the previous assignment. Your code should have a clean separation between the client (which may be very simple), the in-memory model, and the data access objects used to connect to the back-end database. Choose at least three of your database tables to implement (perhaps in simplified form, in case your design had lots of tables), and make sure the code can handle creating the database from scratch and populating it with some example data."
 
 ## Setup
 1. Download zip or clone in desktop
@@ -20,10 +20,6 @@ TODO: Write usage instructions
 3. Commit your changes: `git commit -am 'Add some feature'`
 4. Push to the branch: `git push origin my-new-feature`
 5. Submit a pull request :D
-
-## History
-
-TODO: Write history
 
 ## Credits
 
