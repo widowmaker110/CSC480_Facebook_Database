@@ -5,7 +5,7 @@ TODO: Write a project description
 ## Setup
 1. Download zip or clone in desktop
 2. Create a batch file (.bat) with the following code:
-`java -cp "\Program Files\Java\jdk1.8.0_20\db\lib\derby.jar;\Program Files\Java\jdk1.8.0_20\db\lib\derbynet.jar;\Program Files\Java\jdk1.8.0_20\db\lib\derbyclient.jar;\Program Files\Java\jdk1.8.0_20\db\lib\derbytools.jar" org.apache.derby.drda.NetworkServerControl start -h localhost -noSecurityManager` Run it an wait for the command prompt to say its ready.
+`java -cp "\Program Files\Java\jdk1.8.0_20\db\lib\derby.jar;\Program Files\Java\jdk1.8.0_20\db\lib\derbynet.jar;\Program Files\Java\jdk1.8.0_20\db\lib\derbyclient.jar;\Program Files\Java\jdk1.8.0_20\db\lib\derbytools.jar" org.apache.derby.drda.NetworkServerControl start -h localhost -noSecurityManager` Change the filepath of the Java as needed. Run it an wait for the command prompt to say its ready.
 3. Open the project in your IDE (We're using Eclipse: Luna)
 4. Run the project
 
