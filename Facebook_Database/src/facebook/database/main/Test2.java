@@ -21,7 +21,7 @@ public class Test2 {
 	public static void main(String[] args) {
 		
 		DatabaseManager dbm = new DatabaseManager();
-		
+
 		ArrayList<User> array = dbm.getAllUsers();
 		
 		for(int i = 0; i < array.size(); i++)

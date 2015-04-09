@@ -26,7 +26,7 @@ public class DatabaseManager
 	@SuppressWarnings("unused")
 	private UserDAO userDao;
 	
-	private final String url = "jdbc:derby:facebookDB410201525";
+	private final String url = "jdbc:derby:facebookDB410201533";
 	
 	/**
 	 * Constructor
