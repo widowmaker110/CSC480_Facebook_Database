@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -154,6 +155,46 @@ public class UserDAO
 			dbm.cleanup();
 			throw new RuntimeException("error inserting new user", e);
 		}
+	}
+	
+	public static ArrayList<User> getAllUsers()
+	{
+		
+		try 
+		{
+			String qry = "SELECT * FROM FBUSER";
+			
+			PreparedStatement pstmt = conn.prepareStatement(qry);
+
+			ResultSet rs = pstmt.executeQuery();
+
+			// return null if course doesn't exist
+			if (!rs.next())
+				return null;
+
+			ArrayList<User> arrayUsers = new ArrayList<User>();
+			
+			do
+			{
+				// grab all of the fields
+				int userId = rs.getInt("userId");
+				String userName = rs.getString("userName");
+				String password = rs.getString("userPassword");
+				String email = rs.getString("email");
+				User user = new User(userId, userName, password, email);
+				cache.put(userId, user);
+				arrayUsers.add(user);
+			}while (rs.next());
+			
+			rs.close();
+					
+			return arrayUsers;
+		} 
+		catch (SQLException e) 
+		{
+			dbm.cleanup();
+			throw new RuntimeException("error finding user", e);
+		}		
 	}
 
 	/**

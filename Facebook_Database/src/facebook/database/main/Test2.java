@@ -1,6 +1,6 @@
 package facebook.database.main;
 
-import java.util.Collection;
+import java.util.ArrayList;
 
 import facebook.database.dao.DatabaseManager;
 import facebook.database.model.*;
@@ -22,19 +22,17 @@ public class Test2 {
 		
 		DatabaseManager dbm = new DatabaseManager();
 		
-		// TODO
-//		Department mathcs = dbm.findDepartmentByName("MathCS");
-//		
-//		// Now retrieve a table of MathCS faculty and their courses;
-//		// each course also lists the head of the department offering the course
-//		Collection<Faculty> faculty = mathcs.getFaculty();
-//		for (Faculty fac : faculty) {
-//			System.out.println(fac);
-//			Collection<Course> courses = fac.getCourses();
-//			for (Course c : courses) {
-//				System.out.println("  " + c + " [Head: " + c.getDept().getHead() + "]");
-//			}
-//		}
+		ArrayList<User> array = dbm.getAllUsers();
+		
+		for(int i = 0; i < array.size(); i++)
+		{
+			System.out.println("-------------USER-------------");
+			System.out.println("id: " + array.get(i).getUserId());
+			System.out.println("name: " + array.get(i).getUserName());
+			System.out.println("password: " + array.get(i).getPassword());
+			System.out.println("email: " + array.get(i).getEmail());
+			System.out.println("");
+		}
 		
 		dbm.commit();
 		
@@ -42,5 +40,4 @@ public class Test2 {
 		
 		System.out.println("Done");
 	}
-
 }

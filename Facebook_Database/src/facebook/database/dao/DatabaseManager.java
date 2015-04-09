@@ -3,6 +3,7 @@ package facebook.database.dao;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Properties;
 
@@ -117,6 +118,11 @@ public class DatabaseManager
 	public Comment findComment(int commentId, int userId)
 	{
 		return CommentDAO.find(commentId);
+	}
+	
+	public ArrayList<User> getAllUsers()
+	{
+		return UserDAO.getAllUsers();
 	}
 	
 	// via unique identifier (e.g. findPost by date)
