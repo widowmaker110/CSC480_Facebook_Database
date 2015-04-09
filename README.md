@@ -1,17 +1,16 @@
 #CSC480_Facebook_Database
 
-Project Assignemnt Description: "Write Java code to interface with the database you designed in the previous assignment. Your code should have a clean separation between the client (which may be very simple), the in-memory model, and the data access objects used to connect to the back-end database. Choose at least three of your database tables to implement (perhaps in simplified form, in case your design had lots of tables), and make sure the code can handle creating the database from scratch and populating it with some example data."
+# Assignment
+
+"Write Java code to interface with the database you designed in the previous assignment. Your code should have a clean separation between the client (which may be very simple), the in-memory model, and the data access objects used to connect to the back-end database. Choose at least three of your database tables to implement (perhaps in simplified form, in case your design had lots of tables), and make sure the code can handle creating the database from scratch and populating it with some example data."
 
 ## Setup
+
 1. Download zip or clone in desktop
 2. Create a batch file (.bat) with the following code:
 `java -cp "\Program Files\Java\jdk1.8.0_20\db\lib\derby.jar;\Program Files\Java\jdk1.8.0_20\db\lib\derbynet.jar;\Program Files\Java\jdk1.8.0_20\db\lib\derbyclient.jar;\Program Files\Java\jdk1.8.0_20\db\lib\derbytools.jar" org.apache.derby.drda.NetworkServerControl start -h localhost -noSecurityManager` Change the filepath of the Java as needed. Run it an wait for the command prompt to say its ready.
 3. Open the project in your IDE (We're using Eclipse: Luna)
 4. Run the project
-
-## Usage
-
-TODO: Write usage instructions
 
 ## Contributing
 
