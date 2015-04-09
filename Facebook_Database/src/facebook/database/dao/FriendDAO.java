@@ -102,17 +102,17 @@ public class FriendDAO
 		Statement stmt = conn.createStatement();
 		
 		String s = "alter table FRIEND add constraint fk_frienduser1 "
-				+ "foreign key(friend1) references User on delete cascade";
+				+ "foreign key(friend1) references FBUSER on delete cascade";
 		
 		stmt.executeUpdate(s);
 		
 		s = "alter table FRIEND add constraint fk_frienduser2 "
-				+ "foreign key(friend2) references User on delete cascade";
+				+ "foreign key(friend2) references FBUSER on delete cascade";
 		stmt.executeUpdate(s);
 		
 		// CHECKS
-		s = "check(friend1 > 0), check(freidn2 > 0)";
-		stmt.executeUpdate(s);
+		s = "alter table FRIEND ADD check(friend1 > 0 AND friend2 > 0)";
+		stmt.execute(s);
 	}
 	
 	/**

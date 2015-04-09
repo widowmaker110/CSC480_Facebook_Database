@@ -60,7 +60,7 @@ public class Friend
 		else if(setFriendRequestComplete(true))
 			status = "Friend Request Complete.";
 		else
-			status = "Error Status!";
+			status = "Error!";
 		return status;
 	}
 	

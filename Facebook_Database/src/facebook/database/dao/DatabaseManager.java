@@ -25,7 +25,7 @@ public class DatabaseManager
 	@SuppressWarnings("unused")
 	private UserDAO userDao;
 	
-	private final String url = "jdbc:derby:facebookDB482015";
+	private final String url = "jdbc:derby:facebookDB410201525";
 	
 	/**
 	 * Constructor
@@ -79,11 +79,14 @@ public class DatabaseManager
 		LikeDAO.create(conn);
 		PostDAO.create(conn);
 		UserDAO.create(conn);
+		CommentDAO.create(conn);
 				
 		// CONSTRAINTS
 		FriendDAO.addConstraints(conn);
 		LikeDAO.addConstraints(conn);
 		PostDAO.addConstraints(conn);
+		UserDAO.addConstraints(conn);
+		CommentDAO.addConstraints(conn);
 		
 		conn.commit();
 	}
@@ -116,7 +119,6 @@ public class DatabaseManager
 		return CommentDAO.find(commentId);
 	}
 	
-	// TODO implement methods to find objects by other attributes other than
 	// via unique identifier (e.g. findPost by date)
 
 	//***************************************************************

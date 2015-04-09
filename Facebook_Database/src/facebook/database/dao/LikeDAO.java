@@ -42,12 +42,12 @@ public class LikeDAO
 	static void create(Connection conn) throws SQLException 
 	{
 		Statement stmt = conn.createStatement();
-		String s = "create table LIKE("
+		String s = "create table FBLIKE("
 				+ "likeId int not null, "
 				+ "userId int not null, "
 				+ "postId int not null, "
 				+ "likeDate date not null, "
-				+ "primary key(commentId))";
+				+ "primary key(likeId))";
 		stmt.executeUpdate(s);
 	}
 	
@@ -61,15 +61,16 @@ public class LikeDAO
 	static void addConstraints(Connection conn) throws SQLException 
 	{
 		Statement stmt = conn.createStatement();
-		String s = "alter table LIKE add constraint fk_likeuser "
-				+ "foreign key(userId) references USER on delete cascade";
+		String s = "alter table FBLIKE add constraint fk_likeuser "
+				+ "foreign key(userId) references FBUSER on delete cascade";
 		stmt.executeUpdate(s);
-		s = "alter table LIKE add constraint fk_likepost "
-				+ "foreign key(postId) references POST on delete cascade";
+		
+		s = "alter table FBLIKE add constraint fk_likepost "
+				+ "foreign key(postId) references FBPOST on delete cascade";
 		stmt.executeUpdate(s);
 		
 		// CHECKS
-		s = "check(likeId > 0), check(userId > 0), check(postId > 0)";
+		s = "alter table FBLIKE ADD check(likeId > 0 AND userId > 0 AND postId > 0)";
 		stmt.executeUpdate(s);
 	}
 	
@@ -86,7 +87,7 @@ public class LikeDAO
 			return cache.get(likeId);
 		try
 		{
-			String qry = "select userId, postId, likeDate from LIKE where likeId = ?";
+			String qry = "select userId, postId, likeDate from FBLIKE where likeId = ?";
 			PreparedStatement pstmt = conn.prepareStatement(qry);
 			pstmt.setInt(1, likeId);
 			ResultSet rs = pstmt.executeQuery();
@@ -136,7 +137,7 @@ public class LikeDAO
 			if (find(likeId) != null)
 				return null;
 			
-			String cmd = "insert into LIKE(userId, userId, postId, likeDate) "
+			String cmd = "insert into FBLIKE(likeId, userId, postId, likeDate) "
 						+
 						"values(?, ?, ?, ?)";
 			PreparedStatement pstmt = conn.prepareStatement(cmd);
@@ -156,7 +157,7 @@ public class LikeDAO
 		catch(SQLException e) 
 		{
 			dbm.cleanup();
-			throw new RuntimeException("error inserting new friend", e);
+			throw new RuntimeException("error inserting new like", e);
 		}
 	}
 	
@@ -168,7 +169,7 @@ public class LikeDAO
 	static void clear() throws SQLException 
 	{
 		Statement stmt = conn.createStatement();
-		String s = "delete from LIKE";
+		String s = "delete from FBLIKE";
 		stmt.executeUpdate(s);
 		cache.clear();
 	}

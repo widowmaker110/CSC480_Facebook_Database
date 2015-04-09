@@ -42,7 +42,7 @@ public class PostDAO
 	static void create(Connection conn) throws SQLException 
 	{
 		Statement stmt = conn.createStatement();
-		String s = "create table POST("
+		String s = "create table FBPOST("
 				+ "postId int not null, "
 				+ "userId int not null, "
 				+ "postDate date not null, "
@@ -64,12 +64,12 @@ public class PostDAO
 	static void addConstraints(Connection conn) throws SQLException 
 	{
 		Statement stmt = conn.createStatement();
-		String s = "alter table POST add constraint fk_postuser "
-				+ "foreign key(postId) references USER on delete cascade";
+		String s = "alter table FBPOST add constraint fk_postuser "
+				+ "foreign key(postId) references FBUSER on delete cascade";
 		stmt.executeUpdate(s);
 		
 		// CHECKS
-		s = "check(userId > 0), check(postId > 0)";
+		s = "alter table FBPOST ADD check(userId > 0 AND postId > 0)";
 		stmt.executeUpdate(s);
 	}
 	
@@ -86,7 +86,7 @@ public class PostDAO
 			return cache.get(postId2);
 		try
 		{
-			String qry = "select postId, userId, postDate, postText, postImage, postVideo from POST where postId = ?";
+			String qry = "select postId, userId, postDate, postText, postImage, postVideo from FBPOST where postId = ?";
 			PreparedStatement pstmt = conn.prepareStatement(qry);
 			pstmt.setInt(1, postId2);
 			ResultSet rs = pstmt.executeQuery();
@@ -110,7 +110,7 @@ public class PostDAO
 		catch (SQLException e)
 		{
 			dbm.cleanup();
-			throw new RuntimeException("error finding like", e);
+			throw new RuntimeException("error finding post", e);
 		}
 	}
 
@@ -141,9 +141,9 @@ public class PostDAO
 			if (find(postId2, userId2) != null)
 				return null;
 			
-			String cmd = "insert into LIKE(postId, userId, postDate, postText, postImage, postVideo) "
+			String cmd = "insert into FBPOST(postId, userId, postDate, postText, postImage, postVideo) "
 						+
-						"values(?, ?, ?, ?)";
+						"values(?, ?, ?, ?, ?, ?)";
 			PreparedStatement pstmt = conn.prepareStatement(cmd);
 			
 			pstmt.setInt(1, postId2); 			// postId
@@ -185,7 +185,7 @@ public class PostDAO
 		{
 			// perform a query which asks the Comment table for the number of comments 
 			// for a given postId number.
-			String qry = "select commentId from COMMENT where postId = ?";
+			String qry = "select commentId from FBCOMMENT where postId = ?";
 			PreparedStatement pstmt = conn.prepareStatement(qry);
 			pstmt.setInt(1, postId);
 			ResultSet rs = pstmt.executeQuery();
@@ -214,7 +214,7 @@ public class PostDAO
 	static void clear() throws SQLException 
 	{
 		Statement stmt = conn.createStatement();
-		String s = "delete from POST";
+		String s = "delete from FBPOST";
 		stmt.executeUpdate(s);
 		cache.clear();
 	}

@@ -47,7 +47,7 @@ public class CommentDAO
 	static void create(Connection conn) throws SQLException 
 	{
 		Statement stmt = conn.createStatement();
-		String s = "create table COMMENT("
+		String s = "create table FBCOMMENT("
 				+ "commentId int not null, "
 				+ "userId int not null, "
 				+ "postId int not null, "
@@ -69,16 +69,16 @@ public class CommentDAO
 		Statement stmt = conn.createStatement();
 		
 		// DELETE ON CASCADE
-		String s = "alter table COMMENT add constraint fk_comuser "
-				+ "foreign key(userId) references USER on delete cascade";
+		String s = "alter table FBCOMMENT add constraint fk_comuser "
+				+ "foreign key(userId) references FBUSER on delete cascade";
 		stmt.executeUpdate(s);
 		
-		s = "alter table COMMENT add constraint fk_compost "
-				+ "foreign key(postId) references POST on delete cascade";
+		s = "alter table FBCOMMENT add constraint fk_compost "
+				+ "foreign key(postId) references FBPOST on delete cascade";
 		stmt.executeUpdate(s);
 		
 		// CHECKS
-		s = "check(userId > 0), check(postId > 0), check(commentId > 0)";
+		s = "alter table FBCOMMENT ADD check(userId > 0 AND postId > 0 AND commentId > 0)";
 		stmt.executeUpdate(s);
 		
 	}
@@ -96,7 +96,7 @@ public class CommentDAO
 			return cache.get(commentId);
 		try
 		{
-			String qry = "select userId, postId, commentDate, commentText from COMMENT where commentId = ?";
+			String qry = "select userId, postId, commentDate, commentText from FBCOMMENT where commentId = ?";
 			PreparedStatement pstmt = conn.prepareStatement(qry);
 			pstmt.setInt(1, commentId);
 			ResultSet rs = pstmt.executeQuery();
@@ -148,7 +148,7 @@ public class CommentDAO
 			if(find(commentId) != null)
 				return null;
 			
-			String cmd = "insert into COMMENT(commentId, userId, postId, commentDate, commentText) " + "values(?, ?, ?, ?, ?)";
+			String cmd = "insert into FBCOMMENT(commentId, userId, postId, commentDate, commentText) " + "values(?, ?, ?, ?, ?)";
 			PreparedStatement pstmt = conn.prepareStatement(cmd);
 			pstmt.setInt(1, commentId);
 			pstmt.setInt(2, userId);
@@ -179,7 +179,7 @@ public class CommentDAO
 	{
 		try
 		{
-			String cmd = "update COMMENT set commentText = ? where commentId = ?";
+			String cmd = "update FBCOMMENT set commentText = ? where commentId = ?";
 			PreparedStatement pstmt = conn.prepareStatement(cmd);
 			if(commentText.length() != 0)
 				pstmt.setString(1, commentText);
@@ -203,7 +203,7 @@ public class CommentDAO
 	void clear() throws SQLException 
 	{
 		Statement stmt = conn.createStatement();
-		String s = "delete from COMMENT";
+		String s = "delete from FBCOMMENT";
 		stmt.executeUpdate(s);
 		cache.clear();
 	}

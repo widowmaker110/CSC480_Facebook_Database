@@ -31,7 +31,7 @@ public class Test {
 		
 		DatabaseManager dbm = new DatabaseManager();
 		
-		//dbm.clearTables();
+		dbm.clearTables();
 		
 		// 1. create some dummy variables such as 4 users with a post each.
 		// USERS
@@ -44,9 +44,10 @@ public class Test {
 		Post post1 = new Post(1, user1.getUserId(), getCurrentDate(), "This post is totally cool", "", "");
 		Post post2 = new Post(2, user3.getUserId(), getCurrentDate(), "I should stop coding so much", "", "");
 		
+		System.out.println(getCurrentDate());
 		// COMMENTS
 		Comment comment1 = new Comment(1, user1.getUserId(), post1.getPostId(), getCurrentDate(), "Go home Alex, you're drunk");
-		Comment comment2 = new Comment(2, user4.getUserId(), post2.getPostId(), getCurrentDate(), "Come over to my house then");
+		Comment comment2 = new Comment(2, user3.getUserId(), post2.getPostId(), getCurrentDate(), "Come over to my house then");
 		
 		// LIKES
 		//int likeId, int userId, int postId, Date likeDate
@@ -70,8 +71,8 @@ public class Test {
 		dbm.insertPost(post2.getPostId(), post2.getUserId(), post2.getPostDate(), post2.getPostText(), post2.getPostImage(), post2.getPostVideo());
 		
 		// insert comments
-		dbm.insertComment(comment1.getCommentId(), comment1.getPostId(), comment1.getUserId(), comment1.getCommentDate(), comment1.getCommentContext());
-		dbm.insertComment(comment2.getCommentId(), comment2.getPostId(), comment2.getUserId(), comment2.getCommentDate(), comment2.getCommentContext());
+		dbm.insertComment(comment1.getCommentId(), comment1.getUserId(), comment1.getPostId(), comment1.getCommentDate(), comment1.getCommentContext());
+		dbm.insertComment(comment2.getCommentId(), comment2.getUserId(), comment2.getPostId(), comment2.getCommentDate(), comment2.getCommentContext());
 		
 		// insert likes
 		dbm.insertLike(like1.getLikeId(), like1.getUserId(), like1.getPostId(), like1.getLikeDate());
@@ -89,6 +90,8 @@ public class Test {
 //		- Given a post id, retrieve the following counts: how many comments were made and how
 //		many users liked it. Firstly give the number friends who liked the post and then one large
 //		sum of total users who might or might not be friends.
+		
+		// Get the number of comments for 1 given post
 		System.out.println("How many comments were made: " + PostDAO.getCommentCountForPost(1));
 		
 //		- Given a user id, list all of the friends with their most recent posts in the last 7 days.
@@ -114,13 +117,6 @@ public class Test {
 		
 		// 5. commit again
 		dbm.commit();
-		
-		// 6. make some changes again
-		
-		// 7. commit again
-		dbm.commit();
-		
-		System.out.println("Made some changes");
 	
 		
 		// close the connection

@@ -41,10 +41,10 @@ public class UserDAO
 	static void create(Connection conn) throws SQLException 
 	{
 		Statement stmt = conn.createStatement();
-		String s = "create table USER("
+		String s = "create table FBUSER("
 				+ "userId int not null, "
 				+ "userName varchar(100) not null, "
-				+ "password varchar(30) not null, "
+				+ "userPassword varchar(30) not null, "
 				+ "email varchar(100) not null, "
 				
 				+ "primary key(userId))";
@@ -62,7 +62,7 @@ public class UserDAO
 	static void addConstraints(Connection conn) throws SQLException 
 	{
 		Statement stmt = conn.createStatement();
-		String s = "check(userId > 0), check(email like '_%@_%._%')";
+		String s = "alter table FBUSER ADD check(userId > 0 AND email like '_%@_%._%')";
 		stmt.executeUpdate(s);
 	}
 	
@@ -71,7 +71,7 @@ public class UserDAO
 	 * then executes SQL query if object not already present.
 	 * 
 	 * @param userId
-	 * @return User object with the given attritbutes. Null if not found
+	 * @return User object with the given attributes. Null if not found
 	 */
 	public static User find(int userId) 
 	{
@@ -80,8 +80,8 @@ public class UserDAO
 		
 		try 
 		{
-			String qry = "select userId, userName, password, email "
-					+ "from USER "
+			String qry = "select userId, userName, userPassword, email "
+					+ "from FBUSER "
 					+ "where userId = ?";
 			
 			PreparedStatement pstmt = conn.prepareStatement(qry);
@@ -96,7 +96,7 @@ public class UserDAO
 
 			// grab all of the fields
 			String userName = rs.getString("userName");
-			String password = rs.getString("password");
+			String password = rs.getString("userPassword");
 			String email = rs.getString("email");
 			
 			rs.close();
@@ -131,7 +131,7 @@ public class UserDAO
 			if (find(userId) != null)
 				return null;
 			
-			String cmd = "insert into USER(userId, userName, password, email) "
+			String cmd = "insert into FBUSER(userId, userName, userPassword, email) "
 						+ 
 						"values(?, ?, ?, ?)";
 			
@@ -163,7 +163,7 @@ public class UserDAO
 	 */
 	static void clear() throws SQLException {
 		Statement stmt = conn.createStatement();
-		String s = "delete from USER";
+		String s = "delete from FBUSER";
 		stmt.executeUpdate(s);
 		cache.clear();
 	}

@@ -1,8 +1,51 @@
+Thu Apr 09 15:44:50 EDT 2015 Thread[main,5,main] Cleanup action starting
+java.sql.SQLException: Database 'facebookDB410201525' not found.
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory40.getSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.newEmbedSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.newEmbedSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.newSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.handleDBNotFound(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.<init>(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection30.<init>(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection40.<init>(Unknown Source)
+	at org.apache.derby.jdbc.Driver40.getNewEmbedConnection(Unknown Source)
+	at org.apache.derby.jdbc.InternalDriver.connect(Unknown Source)
+	at org.apache.derby.jdbc.EmbeddedDriver.connect(Unknown Source)
+	at facebook.database.dao.DatabaseManager.<init>(DatabaseManager.java:43)
+	at facebook.database.main.Test.main(Test.java:32)
+Caused by: java.sql.SQLException: Database 'facebookDB410201525' not found.
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory40.wrapArgsForTransportAcrossDRDA(Unknown Source)
+	... 14 more
+============= begin nested exception, level (1) ===========
+java.sql.SQLException: Database 'facebookDB410201525' not found.
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory40.wrapArgsForTransportAcrossDRDA(Unknown Source)
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory40.getSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.newEmbedSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.newEmbedSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.newSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.handleDBNotFound(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.<init>(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection30.<init>(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection40.<init>(Unknown Source)
+	at org.apache.derby.jdbc.Driver40.getNewEmbedConnection(Unknown Source)
+	at org.apache.derby.jdbc.InternalDriver.connect(Unknown Source)
+	at org.apache.derby.jdbc.EmbeddedDriver.connect(Unknown Source)
+	at facebook.database.dao.DatabaseManager.<init>(DatabaseManager.java:43)
+	at facebook.database.main.Test.main(Test.java:32)
+============= end nested exception, level (1) ===========
+Cleanup action completed
 ----------------------------------------------------------------
-Wed Apr 08 16:50:12 EDT 2015:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.7.1.1 - (1040133): instance a816c00e-014c-9acc-230b-000007130458 
-on database directory C:\Users\Alexander\Desktop\CSC480_Facebook_Database\Facebook_Database\facebookDB482015  with class loader sun.misc.Launcher$AppClassLoader@73d16e93 
+Thu Apr 09 15:44:50 EDT 2015:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.7.1.1 - (1040133): instance a816c00e-014c-9fb6-a8f0-000007139e40 
+on database directory C:\Users\Alexander\Desktop\CSC480_Facebook_Database\Facebook_Database\facebookDB410201525  with class loader sun.misc.Launcher$AppClassLoader@73d16e93 
 Loaded from file:/C:/Users/Alexander/Desktop/CSC480_Facebook_Database/Facebook_Database/derby.jar
 java.vendor=Oracle Corporation
 java.runtime.version=1.8.0_31-b13
 Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Thu Apr 09 15:45:08 EDT 2015:
+Shutting down instance a816c00e-014c-9fb6-a8f0-000007139e40 on database directory C:\Users\Alexander\Desktop\CSC480_Facebook_Database\Facebook_Database\facebookDB410201525 with class loader sun.misc.Launcher$AppClassLoader@73d16e93 
