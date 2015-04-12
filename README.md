@@ -2,7 +2,7 @@
 
 # Assignment
 
-"Write Java code to interface with the database you designed in the previous assignment. Your code should have a clean separation between the client (which may be very simple), the in-memory model, and the data access objects used to connect to the back-end database. Choose at least three of your database tables to implement (perhaps in simplified form, in case your design had lots of tables), and make sure the code can handle creating the database from scratch and populating it with some example data."
+"Write Java code to interface with the database you designed in the [previous assignment](https://github.com/widowmaker110/CSC480_Facebook_Database/blob/master/design.txt). Your code should have a clean separation between the client (which may be very simple), the in-memory model, and the data access objects used to connect to the back-end database. Choose at least three of your database tables to implement (perhaps in simplified form, in case your design had lots of tables), and make sure the code can handle creating the database from scratch and populating it with some example data."
 
 ## Setup
 
