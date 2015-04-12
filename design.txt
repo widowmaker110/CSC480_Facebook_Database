@@ -1,0 +1,100 @@
+This design is slightly downsized from the original Facebook.com schema. While we kept many of the same components, we excluded the options for handling pictures, pages, and groups for ease and simplicity. We originally designed this where the User is the center of all the other tables; all others leading to User many-to-1 relationship. However, we realized we ran into some issues in the case of a post/comment/like being deleted and therefore there would be null instances scattered throughout said tables. We decided it would be far better for efficiency and data persistence to have Comments and Likes inherited into Posts for these reasons. 
+
+Our biggest hurdle was the Friends table and how to process the symmetric relations between users. The difficulty in this lies with how to say Friend A is a friend to Friend B and Friend B is a friend to Friend A at the same time. We realized we could assign unique userId’s to each of the users as a foreign key. After that, we believed it would be far less memory for the database to hold both userId’s in the same row instead of a separate row for each.
+
+There are no redundant relationships in the diagram, because there are no multiple paths
+between any two tables. Also, there are no non-key-based functional dependencies.
+
+Here is the SQL schema produced from the above diagram:
+create table User (
+	userId int not null,
+userName varchar(100) not null,
+	password varchar(30) not null,
+	email varchar(100) not null,
+
+	primary key (UserId),
+	
+	check(userId > 0),
+	check(email like '_%@_%._%')
+);
+
+create table Friend (
+	friend1 int not null,
+friend2 int not null,
+	friendSince date,
+	friendRequestPending boolean not null,
+	friendRequestCanceled boolean not null,
+	friendRequestComplete boolean not null,
+
+	primary key (friend1, friend2),
+foreign key (friend1) references User on delete cascade,
+foreign key (friend2) references User on delete cascade,
+
+	check(friend1 > 0),
+	check(friend2 > 0)
+);
+
+create table Post (
+	postId int not null,
+userId int not null,
+postDate date not null,
+postText varchar(1000) not null,
+postImage varchar(256),
+postVideo varchar(256),
+
+ 	primary key (postId),
+	foreign key (userId) references User on delete cascade,
+
+	check(postId > 0),
+	check(userId > 0)
+);
+
+create table Like (
+	likeId int not null,
+userId int not null,
+postId int not null,
+	likeDate date not null,
+
+	primary key (likeId),
+	foreign key (userId) references User on delete cascade,
+	foreign key(postId) reference Post on delete cascade,
+
+	check(likeId > 0),
+	check(userId > 0),
+	check(postId > 0)
+);
+
+
+create table Comment (
+	commentId int not null,
+	userId int not null,
+	postId int not null,
+commentDate date not null,
+	commentText varchar(1000),
+	
+	primary key (commentId),
+	foreign key (userId) references User on delete cascade,
+foreign key (postId) references Post on delete cascade,
+
+	check(commentId > 0),
+	check(userId > 0),
+	check(postId > 0)
+);
+
+Design Decisions:
+
+Beyond the design considerations discussed above, we have added a few additional
+constraints. We have set the state of the Friend’s table friend requests to integer values that would be changed from the front end of our services. On top of that, the table is designed to hold who made the first action to friend request (friend1) and who was the recipient (friend2). Finally, none of the fields are allowed to be null except for the multimedia rows in the Post table, and deletes are cascaded through the foreign keys (so deleting a post will delete their comments and likes, for example). 
+
+Here are four example queries:
+
+●	Given a post id, retrieve the following counts: how many comments were made and how many users liked it. Firstly give the number friends who liked the post and then one large sum of total users who might or might not be friends. 
+
+●	Given a user id, list all of the friends with their most recent posts in the last 7 days.
+
+●	Given a user id and year, retrieve a report of the date and activity total for
+each of that user’s likes and comments on posts not made by said user.
+
+●	Given two user A and B, find out if A sent friend request to B before.  If so, find out whether the friend request is completed, canceled or still pending.
+
+One possible view is to show the friends of User A all of his friends most recent feed within the last 7 days. All of these posts must have the friendRequestComplete set to true (or 1) in order for them to appear. They must also be placed in most recent first. 
