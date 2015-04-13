@@ -47,9 +47,7 @@ public class Test3 extends TimerTask {
 			+ "1. Quit - stops the program\n"
 			+ "2. Help - lists all of the commands\n"
 			+ "3. Insert - gives you a list of options for inserting objects into the database\n"
-			+ "4. Find - gives you a list of tables to search in and then asks for an existing ID number\n"
-			+ "5. Remove - allows you to remove an object from the database with its given ID number\n"
-			+ "6. Update - allows you to update an object from the database with its given ID number\n";
+			+ "4. Find - gives you a list of tables to search in and then asks for an existing ID number\n";
 		
 		
 		System.out.println("Please wait patiently while the database loads");
@@ -338,133 +336,6 @@ public class Test3 extends TimerTask {
 						// back out
 						continue;
 				}
-			}
-			else if(command.trim().equalsIgnoreCase("remove"))
-			{
-				System.out.println("Choose which table to remove from: \n"
-						+ "(1) Users\n"
-						+ "(2) Friend\n"
-						+ "(3) Like\n"
-						+ "(4) Post\n"
-						+ "(5) Comment\n"
-						+ "(6) Leave this command");
-				System.out.print(">>>");
-				int choice = scanner.nextInt();
-				switch(choice)
-				{
-					default:
-					case 1:
-						// TODO users
-						User user;
-						System.out.print("UserId: ");
-						int userId = scanner.nextInt();
-						user = dbm.findUser(userId);
-						if(user == null)
-						{
-							System.out.println("User not found");
-						}
-						else
-						{
-							System.out.print("User found. Are you sure? (Y/N): ");
-							String answer = scanner.next();
-							if(answer.equalsIgnoreCase("y"))
-							{
-								dbm.deleteUser(userId);
-							}
-						}
-						break;
-					case 2:
-						// TODO friends
-						Friend friend;
-						System.out.print("friend1ID: ");
-						int friend1ID = scanner.nextInt();
-						System.out.print("friend2ID: ");
-						int friend2ID = scanner.nextInt();
-						friend = dbm.findFriend(friend1ID, friend2ID);
-						if(friend == null)
-						{
-							System.out.println("Friend not found");
-						}
-						else
-						{
-							System.out.println("Friend:\n"
-									+ "ID1: " + friend.getRequestSender() + "\n"
-									+ "ID2: " + friend.getRequestRecipient() + "\n"
-									+ "Friend since: " + friend.getFriendSince() + "\n"
-									+ "Friendship status: " + friend.getFriendRequestStatus() + "\n");
-						}
-						break;
-					case 3:
-						// TODO likes
-						Like like;
-						System.out.print("like ID: ");
-						int likeId = scanner.nextInt();
-						like = dbm.findLike(likeId);
-						if(like == null)
-						{
-							System.out.println("Like not found");
-						}
-						else
-						{
-							System.out.println("Like:\n"
-									+ "Like ID: " + like.getLikeId() + "\n"
-									+ "Post ID: " + like.getPostId() + "\n"
-									+ "User ID: " + like.getUserId() + "\n"
-									+ "Like date: " + like.getLikeDate() + "\n");
-						}
-						break;
-					case 4:
-						// TODO posts
-						Post post;
-						System.out.print("Post ID: ");
-						int postId = scanner.nextInt();
-						System.out.print("User ID: ");
-						int postUserId = scanner.nextInt();
-						post = dbm.findPost(postId, postUserId);
-						if(post == null)
-						{
-							System.out.println("Post not found");
-						}
-						else
-						{
-							System.out.println("Like:\n"
-									+ "ID: " + post.getPostId() + "\n"
-									+ "User ID: " + post.getUserId() + "\n"
-									+ "Post date: " + post.getPostDate() + "\n"
-									+ "Post Image: " + post.getPostImage() + "\n"
-									+ "Post Video: " + post.getPostVideo() + "\n");
-						}
-						break;
-					case 5:
-						// TODO comments
-						Comment comment;
-						System.out.print("comment ID: ");
-						int commentId = scanner.nextInt();
-						System.out.print("user ID: ");
-						int commentUserId = scanner.nextInt();
-						comment = dbm.findComment(commentId, commentUserId);
-						if(comment == null)
-						{
-							System.out.println("Comment not found");
-						}
-						else
-						{
-							System.out.println("Comment:\n"
-									+ "ID: " + comment.getCommentId() + "\n"
-									+ "Post ID: " + comment.getPostId() + "\n"
-									+ "User ID: " + comment.getUserId() + "\n"
-									+ "Comment Text: " + comment.getCommentContext() + "\n"
-									+ "Comment Date: " + comment.getCommentDate()+ "\n");
-						}
-						break;
-					case 6:
-						// back out
-						continue;
-				}
-			}
-			else if(command.trim().equalsIgnoreCase("update"))
-			{
-				
 			}
 			else
 			{
