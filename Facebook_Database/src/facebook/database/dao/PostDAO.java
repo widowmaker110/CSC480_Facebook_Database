@@ -178,13 +178,6 @@ public class PostDAO
 			int count = 0;
 			for(int i = 0; i < CommentCache.size(); i++)
 			{
-				boolean m = (boolean) CommentCache.containsValue(CommentCache.get(i).equals(postId));
-				System.out.println(m);
-				
-				if(m)
-				{
-					
-				}
 //				Comment comment = CommentCache..get(i);
 //				if(CommentCache.get(i).getPostId() == postId)
 //				{

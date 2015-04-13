@@ -4,7 +4,6 @@ import facebook.database.dao.UserDAO;
 
 public class User 
 {
-	@SuppressWarnings("unused")
 	private UserDAO dao;
 	private int userId;
 	private String userName;
@@ -19,14 +18,12 @@ public class User
 	 * @param password
 	 * @param email
 	 */
-	public User(/*UserDAO dao,*/ int userId, String userName, String password, String email)
+	public User(int userId, String userName, String password, String email)
 	{
-		//this.dao = dao;
 		this.userId = userId;
 		this.userName = userName;
 		this.password = password;
 		this.email = email;
-		//...
 	}
 	
 	public int getUserId()
@@ -64,6 +61,6 @@ public class User
 	public void changeEmail(String newEmail)
 	{
 		email = newEmail;
-		//dao.changeEmail(...);
+		dao.changeEmail(userId, email);
 	}
 }

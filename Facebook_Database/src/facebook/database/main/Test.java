@@ -1,5 +1,6 @@
 package facebook.database.main;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import facebook.database.dao.DatabaseManager;
@@ -101,7 +102,7 @@ public class Test {
 //		- Given a user id, list all of the friends with their most recent posts in the last 7 days.
 
 //		- Given a user id and year, retrieve a report of the date and activity total for
-//		each of that user’s likes and comments on posts not made by said user.
+//		each of that userï¿½s likes and comments on posts not made by said user.
 
 //		- Given two user A and B, find out if A sent friend request to B before. If so, find out
 //		whether the friend request is completed, canceled or still pending.
@@ -118,6 +119,36 @@ public class Test {
 //				System.out.println("  " + c + " [Head: " + c.getDept().getHead() + "]");
 //			}
 //		}
+		
+		
+		//retrieve
+
+		ArrayList<User> array = dbm.getAllUsers();
+		
+		for(int i = 0; i < array.size(); i++)
+		{
+			System.out.println("-------------USER-------------");
+			System.out.println("id: " + array.get(i).getUserId());
+			System.out.println("name: " + array.get(i).getUserName());
+			System.out.println("password: " + array.get(i).getPassword());
+			System.out.println("email: " + array.get(i).getEmail());
+			System.out.println("");
+		}
+		
+		dbm.commit();
+		
+		//update
+		System.out.println("Updating all the user's email to DePauw surfix.");
+		for(User u : array)
+		{
+			String[] splits = u.getEmail().split("@");
+			String newSurfix = "@depauw.edu";
+			String newEmail = splits[0] + newSurfix;
+			System.out.println(newEmail);
+			u.changeEmail(newEmail);
+			System.out.println(u.getEmail());
+		}
+		
 		
 		// 5. commit again
 		dbm.commit();

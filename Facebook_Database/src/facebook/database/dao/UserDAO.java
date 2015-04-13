@@ -227,6 +227,28 @@ public class UserDAO
 			throw new RuntimeException("error finding user", e);
 		}		
 	}
+	
+	public void changeEmail(int userId, String email)
+	{
+		try
+		{
+			String cmd = "update FBUSER set email = ? where userId = ?";
+			PreparedStatement pstmt = conn.prepareStatement(cmd);
+			if (email != null) {
+				// special handling because the head might be null
+				pstmt.setString(1, email);
+			} else {
+				pstmt.setNull(1, java.sql.Types.VARCHAR);
+			}
+			pstmt.setInt(2, userId);
+			pstmt.executeUpdate();
+		}
+		catch(SQLException e) 
+		{
+			dbm.cleanup();
+			throw new RuntimeException("error changing email", e);
+		}
+	}
 
 	/**
 	 * Clear all data from the User table.
