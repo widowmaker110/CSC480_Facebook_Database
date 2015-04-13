@@ -26,7 +26,7 @@ public class DatabaseManager
 	@SuppressWarnings("unused")
 	private UserDAO userDao;
 	
-	private final String url = "jdbc:derby:facebookDB410201533";
+	private final String url = "jdbc:derby:facebookDB410201536";
 	
 	/**
 	 * Constructor
@@ -126,6 +126,11 @@ public class DatabaseManager
 	}
 	
 	// via unique identifier (e.g. findPost by date)
+	
+	public void deleteUser(int userId)
+	{
+		UserDAO.delete(userId);
+	}
 
 	//***************************************************************
 	// Data insertion functions -- create new model object from attributes

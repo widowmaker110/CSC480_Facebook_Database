@@ -175,14 +175,30 @@ public class PostDAO
 		{
 			// grab the comment hashmap object from the commentDAO cache
 			Map<Integer, Comment> CommentCache = CommentDAO.getCommentCache();
-			
+			int count = 0;
+			for(int i = 0; i < CommentCache.size(); i++)
+			{
+				boolean m = (boolean) CommentCache.containsValue(CommentCache.get(i).equals(postId));
+				System.out.println(m);
+				
+				if(m)
+				{
+					
+				}
+//				Comment comment = CommentCache..get(i);
+//				if(CommentCache.get(i).getPostId() == postId)
+//				{
+//					count++;
+//				}
+			}
 			// return the size of all comments related to a given post
-			return CommentCache.size();
+			return count;
 		}
 
 		// else, check database
 		try
 		{
+			System.out.println("2");
 			// perform a query which asks the Comment table for the number of comments 
 			// for a given postId number.
 			String qry = "select commentId from FBCOMMENT where postId = ?";

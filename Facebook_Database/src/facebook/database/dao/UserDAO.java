@@ -67,6 +67,37 @@ public class UserDAO
 		stmt.executeUpdate(s);
 	}
 	
+	public static void delete(int userId)
+	{
+
+		try 
+		{
+			String qry = "DELETE FROM FBUSER WHERE userId = ?";
+			
+			PreparedStatement pstmt = conn.prepareStatement(qry);
+			
+			pstmt.setInt(1, userId);
+
+			ResultSet rs = pstmt.executeQuery();
+
+			// return null if course doesn't exist
+			if (!rs.next())
+			{
+				System.out.println("Error 1");
+				return;
+			}
+			rs.close();
+			
+			cache.remove(cache.get(userId));
+			System.out.println("delete commited");
+		} 
+		catch (SQLException e) 
+		{
+			dbm.cleanup();
+			throw new RuntimeException("error finding user", e);
+		}
+	}
+	
 	/**	
 	 * Retrieve a User object given its key. Checks the cache first,
 	 * then executes SQL query if object not already present.
@@ -168,7 +199,7 @@ public class UserDAO
 
 			ResultSet rs = pstmt.executeQuery();
 
-			// return null if course doesn't exist
+			// return null if fbuser doesn't exist
 			if (!rs.next())
 				return null;
 

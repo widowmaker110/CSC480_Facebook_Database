@@ -43,11 +43,13 @@ public class Test {
 		// POST
 		Post post1 = new Post(1, user1.getUserId(), getCurrentDate(), "This post is totally cool", "", "");
 		Post post2 = new Post(2, user3.getUserId(), getCurrentDate(), "I should stop coding so much", "", "");
+		Post post3 = new Post(3, user4.getUserId(), getCurrentDate(), "Did you hear about this new song?", "", "");
 		
 		System.out.println(getCurrentDate());
 		// COMMENTS
 		Comment comment1 = new Comment(1, user1.getUserId(), post1.getPostId(), getCurrentDate(), "Go home Alex, you're drunk");
 		Comment comment2 = new Comment(2, user3.getUserId(), post2.getPostId(), getCurrentDate(), "Come over to my house then");
+		Comment comment3 = new Comment(3, user2.getUserId(), post3.getPostId(), getCurrentDate(), "weeeeee");
 		
 		// LIKES
 		//int likeId, int userId, int postId, Date likeDate
@@ -69,10 +71,12 @@ public class Test {
 		// insert posts
 		dbm.insertPost(post1.getPostId(), post1.getUserId(), post1.getPostDate(), post1.getPostText(), post1.getPostImage(), post1.getPostVideo());
 		dbm.insertPost(post2.getPostId(), post2.getUserId(), post2.getPostDate(), post2.getPostText(), post2.getPostImage(), post2.getPostVideo());
+		dbm.insertPost(post3.getPostId(), post3.getUserId(), post3.getPostDate(), post3.getPostText(), post3.getPostImage(), post3.getPostVideo());
 		
 		// insert comments
 		dbm.insertComment(comment1.getCommentId(), comment1.getUserId(), comment1.getPostId(), comment1.getCommentDate(), comment1.getCommentContext());
 		dbm.insertComment(comment2.getCommentId(), comment2.getUserId(), comment2.getPostId(), comment2.getCommentDate(), comment2.getCommentContext());
+		dbm.insertComment(comment3.getCommentId(), comment3.getUserId(), comment3.getPostId(), comment3.getCommentDate(), comment3.getCommentContext());
 		
 		// insert likes
 		dbm.insertLike(like1.getLikeId(), like1.getUserId(), like1.getPostId(), like1.getLikeDate());
