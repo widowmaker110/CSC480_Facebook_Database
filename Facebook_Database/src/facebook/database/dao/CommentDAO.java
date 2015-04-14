@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -167,6 +168,47 @@ public class CommentDAO
 			dbm.cleanup();
 			throw new RuntimeException("error inserting new comment", e);
 		}
+	}
+	
+	public static ArrayList<Comment> getAllComments()
+	{
+		
+		try 
+		{
+			String qry = "SELECT * FROM FBCOMMENT";
+			
+			PreparedStatement pstmt = conn.prepareStatement(qry);
+
+			ResultSet rs = pstmt.executeQuery();
+
+			// return null if fbuser doesn't exist
+			if (!rs.next())
+				return null;
+
+			ArrayList<Comment> arrayComments = new ArrayList<Comment>();
+			
+			do
+			{
+				// grab all of the fields
+				int commentId = rs.getInt("commentId");
+				int userId = rs.getInt("userId");
+				int postId = rs.getInt("postId");
+				Date commentDate = rs.getDate("commentDate");
+				String commentText = rs.getString("commentText");
+				Comment comment = new Comment(commentId, userId, postId, commentDate, commentText);
+				cache.put(commentId, comment);
+				arrayComments.add(comment);
+			}while (rs.next());
+			
+			rs.close();
+					
+			return arrayComments;
+		} 
+		catch (SQLException e) 
+		{
+			dbm.cleanup();
+			throw new RuntimeException("error finding user", e);
+		}		
 	}
 	
 	/**

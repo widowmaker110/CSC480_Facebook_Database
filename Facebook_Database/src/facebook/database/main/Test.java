@@ -91,15 +91,52 @@ public class Test {
 		
 		//retrieve
 
-		ArrayList<User> array = dbm.getAllUsers();
+		ArrayList<User> userArray = dbm.getAllUsers();
 		
-		for(int i = 0; i < array.size(); i++)
+		for(int i = 0; i < userArray.size(); i++)
 		{
 			System.out.println("-------------USER-------------");
-			System.out.println("id: " + array.get(i).getUserId());
-			System.out.println("name: " + array.get(i).getUserName());
-			System.out.println("password: " + array.get(i).getPassword());
-			System.out.println("email: " + array.get(i).getEmail());
+			System.out.println("id: " + userArray.get(i).getUserId());
+			System.out.println("name: " + userArray.get(i).getUserName());
+			System.out.println("password: " + userArray.get(i).getPassword());
+			System.out.println("email: " + userArray.get(i).getEmail());
+			System.out.println("");
+		}
+		
+		ArrayList<Comment> commentArray = dbm.getAllComments();
+		
+		for(int i = 0; i < commentArray.size(); i++)
+		{
+			System.out.println("-------------COMMENT-------------");
+			System.out.println("commentId: " + commentArray.get(i).getCommentId());
+			System.out.println("userId: " + commentArray.get(i).getUserId());
+			System.out.println("postId: " + commentArray.get(i).getPostId());
+			System.out.println("commentDate: " + commentArray.get(i).getCommentDate());
+			System.out.println("commentText: " + commentArray.get(i).getCommentContext());
+			System.out.println("");
+		}
+		
+		ArrayList<Post> postArray = dbm.getAllPosts();
+		
+		for(int i = 0; i < postArray.size(); i++)
+		{
+			System.out.println("-------------POST-------------");
+			System.out.println("postId: " + postArray.get(i).getPostId());
+			System.out.println("userId: " + postArray.get(i).getUserId());
+			System.out.println("postDate: " + postArray.get(i).getPostDate());
+			System.out.println("postText: " + postArray.get(i).getPostText());
+			System.out.println("");
+		}
+		
+		ArrayList<Like> likeArray = dbm.getAllLikes();
+		
+		for(int i = 0; i < likeArray.size(); i++)
+		{
+			System.out.println("-------------LIKE-------------");
+			System.out.println("likeId: " + likeArray.get(i).getLikeId());
+			System.out.println("userId: " + likeArray.get(i).getUserId());
+			System.out.println("postId: " + likeArray.get(i).getPostId());
+			System.out.println("likeDate: " + likeArray.get(i).getLikeDate());
 			System.out.println("");
 		}
 		
