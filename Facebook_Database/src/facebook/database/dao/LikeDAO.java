@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -110,6 +111,46 @@ public class LikeDAO
 			dbm.cleanup();
 			throw new RuntimeException("error finding like", e);
 		}
+	}
+	
+	public static ArrayList<Like> getAllLikes()
+	{
+		
+		try 
+		{
+			String qry = "SELECT * FROM FBLIKE";
+			
+			PreparedStatement pstmt = conn.prepareStatement(qry);
+
+			ResultSet rs = pstmt.executeQuery();
+
+			// return null if fbuser doesn't exist
+			if (!rs.next())
+				return null;
+
+			ArrayList<Like> arrayLikes = new ArrayList<Like>();
+			
+			do
+			{				
+				// grab all of the fields
+				int likeId = rs.getInt("likeId");
+				int userId = rs.getInt("userId");
+				int postId = rs.getInt("postId");
+				Date likeDate = rs.getDate("likeDate");
+				Like like = new Like(likeId, userId, postId, likeDate);
+				cache.put(likeId, like);
+				arrayLikes.add(like);
+			}while (rs.next());
+			
+			rs.close();
+					
+			return arrayLikes;
+		} 
+		catch (SQLException e) 
+		{
+			dbm.cleanup();
+			throw new RuntimeException("error finding likes", e);
+		}		
 	}
 
 	// http://alvinalexander.com/java/java-current-date-example-now

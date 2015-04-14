@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -112,6 +113,49 @@ public class PostDAO
 			dbm.cleanup();
 			throw new RuntimeException("error finding post", e);
 		}
+	}
+	
+	public static ArrayList<Post> getAllPosts()
+	{
+		
+		try 
+		{
+			String qry = "SELECT * FROM FBPOST";
+			
+			PreparedStatement pstmt = conn.prepareStatement(qry);
+
+			ResultSet rs = pstmt.executeQuery();
+
+			// return null if fbuser doesn't exist
+			if (!rs.next())
+				return null;
+
+			ArrayList<Post> arrayPosts = new ArrayList<Post>();
+			
+			do
+			{
+				
+				// grab all of the fields
+				int postId = rs.getInt("postId");
+				int userId = rs.getInt("userId");
+				Date postDate = rs.getDate("postDate");
+				String postText = rs.getString("postText");
+				String postImage = rs.getString("postImage");
+				String postVideo = rs.getString("postVideo");
+				Post post = new Post(postId, userId, postDate, postText, postImage, postVideo);
+				cache.put(postId, post);
+				arrayPosts.add(post);
+			}while (rs.next());
+			
+			rs.close();
+					
+			return arrayPosts;
+		} 
+		catch (SQLException e) 
+		{
+			dbm.cleanup();
+			throw new RuntimeException("error finding posts", e);
+		}		
 	}
 
 	// http://alvinalexander.com/java/java-current-date-example-now

@@ -356,6 +356,7 @@ public class Test3 extends TimerTask {
 	private static void initialize()
 	{
 		users = new ArrayList<User>();
+		
 		friends = new ArrayList<Friend>();
 		likes = new ArrayList<Like>();
 		posts = new ArrayList<Post>();

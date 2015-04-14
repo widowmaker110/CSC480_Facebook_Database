@@ -127,9 +127,25 @@ public class DatabaseManager
 	
 	// via unique identifier (e.g. findPost by date)
 	
+	// this is currently 
 	public void deleteUser(int userId)
 	{
 		UserDAO.delete(userId);
+	}
+	
+	public ArrayList<Post> getAllPosts()
+	{
+		return PostDAO.getAllPosts();
+	}
+	
+	public ArrayList<Like> getAllLikes()
+	{
+		return LikeDAO.getAllLikes();
+	}
+	
+	public ArrayList<Comment> getAllComments()
+	{
+		return CommentDAO.getAllComments();
 	}
 
 	//***************************************************************
