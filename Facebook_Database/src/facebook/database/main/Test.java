@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import facebook.database.dao.DatabaseManager;
-import facebook.database.dao.PostDAO;
 import facebook.database.model.*;
 
 /**
@@ -90,37 +89,6 @@ public class Test {
 		// 3. commit the changes
 		dbm.commit();
 		
-		// example queries from our submission PDF
-
-//		- Given a post id, retrieve the following counts: how many comments were made and how
-//		many users liked it. Firstly give the number friends who liked the post and then one large
-//		sum of total users who might or might not be friends.
-		
-		// Get the number of comments for 1 given post
-		System.out.println("How many comments were made: " + PostDAO.getCommentCountForPost(1));
-		
-//		- Given a user id, list all of the friends with their most recent posts in the last 7 days.
-
-//		- Given a user id and year, retrieve a report of the date and activity total for
-//		each of that user�s likes and comments on posts not made by said user.
-
-//		- Given two user A and B, find out if A sent friend request to B before. If so, find out
-//		whether the friend request is completed, canceled or still pending.
-		
-		
-		// 4. retrieve retrieve everything and make some changes
-//		// Now retrieve a table of MathCS faculty and their courses;
-//		// each course also lists the head of the department offering the course
-//		Collection<Faculty> faculty = mathcs.getFaculty();
-//		for (Faculty fac : faculty) {
-//			System.out.println(fac);
-//			Collection<Course> courses = fac.getCourses();
-//			for (Course c : courses) {
-//				System.out.println("  " + c + " [Head: " + c.getDept().getHead() + "]");
-//			}
-//		}
-		
-		
 		//retrieve
 
 		ArrayList<User> array = dbm.getAllUsers();
@@ -135,24 +103,8 @@ public class Test {
 			System.out.println("");
 		}
 		
-		dbm.commit();
-		
-		//update
-		System.out.println("Updating all the user's email to DePauw surfix.");
-		for(User u : array)
-		{
-			String[] splits = u.getEmail().split("@");
-			String newSurfix = "@depauw.edu";
-			String newEmail = splits[0] + newSurfix;
-			System.out.println(newEmail);
-			u.changeEmail(newEmail);
-			System.out.println(u.getEmail());
-		}
-		
-		
 		// 5. commit again
 		dbm.commit();
-	
 		
 		// close the connection
 		dbm.close();
